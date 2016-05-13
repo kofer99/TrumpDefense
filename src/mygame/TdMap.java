@@ -8,6 +8,7 @@ import com.jme3.input.InputManager;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Quad;
 import com.jme3.texture.Image;
 import com.jme3.texture.image.ImageRaster;
@@ -175,19 +176,19 @@ public class TdMap {
         return nodey;
     }
 
-    public boolean towerplace(Vector3f mousePosition, Quad rat) {
-        int max = 20;
+    public boolean towerplace(Vector3f mousePosition, Quad rat, Vector2f size) {
+        int max = (int) size.getX();
         boolean ret = true;
         float ratiox = getWidth() / rat.getWidth();
         float ratioy = getHeight() / rat.getHeight();
         int positionx = (int) (ratiox * mousePosition.getX()) + (int) (rat.getWidth() / 2 * ratiox);
         int positiony = Math.abs((int) (rat.getHeight() / 2 * ratioy) - (int) (ratioy * mousePosition.getY()));
-        // positionx -= max/2;
-        //positiony -= max/2;
+         positionx -= max/2;
+        positiony -= max/2;
         System.out.println("sees:" + positionx + ":" + mousePosition.toString() + ":" + rat.getWidth());
         System.out.println("saas:" + positiony + ":" + mousePosition.toString() + ":" + rat.getHeight());
-
-        if (positionx >= 0 && positiony >= 0 /*&& (positionx + max) < (getWidth()) && (positiony + max) < (getHeight())*/) {
+    if (positionx <= 0 || positiony <= 0 || (positionx + max) > (getWidth()-1) || (positiony + max) > (getHeight()-1)) { return false; }
+        
             for (int x = positionx; x < positionx +max; x++) {
                 for (int y = positiony; y < positiony + max; y++) {
                     if(x<= getWidth()-1&& y<= getHeight()-1){
@@ -201,8 +202,7 @@ public class TdMap {
                     }}
                 }
             }
-        }
+        
         return ret;
 
-    }
-}
+    }}

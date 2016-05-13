@@ -125,7 +125,7 @@ public class Main extends SimpleApplication {
 
         Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.setColor("Color", ColorRGBA.Blue);
-
+        boxs.setUserData("Size", new Vector2f(b.getXExtent(),b.getYExtent()));
         boxs.setMaterial(mat);
         boxs.setLocalTranslation(as);
         boxs.addControl(new CubeControl(spheres));
@@ -321,14 +321,17 @@ public class Main extends SimpleApplication {
 
                         for (int i = (int) (-fsq.getWidth() / 2); i < (int) (fsq.getWidth() / 2); i++) {
                             for (int j = (int) (-fsq.getHeight() / 2); j < (int) (fsq.getHeight() / 2); j++) {
-                    Vector3f position = new Vector3f(i,j,closest.getContactPoint().getZ()); //closest.getContactPoint();
-                        //   Vector3f position = closest.getContactPoint();
-                    //    if (map.towerplace(position, fsq) == true) {
-                       if(map.towerplace(position, fsq)== true){
-                            cubes.attachChild(createBox(position));
-                       } else {
+                                Vector3f position = new Vector3f(i, j, closest.getContactPoint().getZ()); //closest.getContactPoint();
+                                //   Vector3f position = closest.getContactPoint();
+                                //    if (map.towerplace(position, fsq) == true) {
+                                Geometry cube = createBox(position);
+                                if (map.towerplace(position, fsq, (Vector2f) cube.getUserData("Size")) == true) {
+                                    cubes.attachChild(cube);
+                                } else {
+                                    cube.removeFromParent();
+                                }
+                            }
                         }
-                            }}
                         //shootables.attachChild(cubes);
                         //shootables.attachChild(player = createBox(closest.getContactPoint()));
                         peter = "nichts";
