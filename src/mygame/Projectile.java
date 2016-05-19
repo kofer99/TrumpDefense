@@ -37,9 +37,9 @@ class Projectile extends AbstractControl {
         direction.multLocal(speedFactor);
         velocity.addLocal(direction);
         //Kontrolliert geschwindigkeit damit nicht außer kontrolle bewegt wird ( macht komische Ellipsen)
-        velocity.multLocal(0.8f);
+        velocity.multLocal(0.9f);
         //Bewegt und KOntrolliert GEschwindikeit damit auf allen pcs gleich
-        spatial.move(velocity.mult(0.1f * tpf));
+        spatial.move(velocity.mult(0.15f * tpf));
         if (target.getPosition().distance(spatial.getLocalTranslation()) < distance) {
             target.hit(this);
         }
