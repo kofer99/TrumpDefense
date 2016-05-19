@@ -8,7 +8,6 @@ import com.jme3.input.InputManager;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Quad;
 import com.jme3.texture.Image;
 import com.jme3.texture.image.ImageRaster;
@@ -37,17 +36,16 @@ public class TdMap {
         ir = ImageRaster.create(fieldmap);
         int ppfx = ir.getWidth() / fieldsx;
         int ppfy = ir.getHeight() / fieldsy;
-        System.out.println(fieldsx + "/" + fieldsy + "/" + ir.getWidth() + "/" + ir.getHeight() + "/" + ppfx + "/" + ppfy);
         if (ppfx != ppfy) {
             System.out.println("Die Felder sind nicht quadratisch!");
         }
         if (ppfx * fieldsx != ir.getWidth() || ppfy * fieldsy != ir.getHeight()) {
             System.out.println("Die Bildgröße ist nicht durch die Felder teilbar!");
         }
-        scanTowerFields(fieldsx, fieldsy, ppfx, ppfy, ir);
+        //scanTowerFields(fieldsx, fieldsy, ppfx, ppfy, ir);
         scanNodes(ir);
-        print();
-        System.out.println(getMaxDistance());
+        //print();
+        //System.out.println(getMaxDistance());
         height = ir.getHeight();
         width = ir.getWidth();
     }
@@ -176,33 +174,36 @@ public class TdMap {
         return nodey;
     }
 
-    public boolean towerplace(Vector3f mousePosition, Quad rat, Vector2f size) {
-        int max = (int) size.getX();
+    public boolean towerplace(Vector3f mousePosition, Quad rat) {
+        int max = 20;
         boolean ret = true;
         float ratiox = getWidth() / rat.getWidth();
         float ratioy = getHeight() / rat.getHeight();
         int positionx = (int) (ratiox * mousePosition.getX()) + (int) (rat.getWidth() / 2 * ratiox);
         int positiony = Math.abs((int) (rat.getHeight() / 2 * ratioy) - (int) (ratioy * mousePosition.getY()));
-         positionx -= max/2;
-        positiony -= max/2;
-        System.out.println("sees:" + positionx + ":" + mousePosition.toString() + ":" + rat.getWidth());
-        System.out.println("saas:" + positiony + ":" + mousePosition.toString() + ":" + rat.getHeight());
-    if (positionx <= 0 || positiony <= 0 || (positionx + max) > (getWidth()-1) || (positiony + max) > (getHeight()-1)) { return false; }
-        
-            for (int x = positionx; x < positionx +max; x++) {
+        positionx -= max / 2;
+        positiony -= max / 2;
+        if (positionx < 0 || positiony < 0 || ((positionx + max) >= getWidth()) || (positiony + max) >= getHeight()) {
+            return false;
+        }
+        try {
+            for (int x = positionx; x < positionx + max; x++) {
                 for (int y = positiony; y < positiony + max; y++) {
-                    if(x<= getWidth()-1&& y<= getHeight()-1){
-                    ColorRGBA c = ir.getPixel(x, getHeight()-y);
-                    int r = (int) (255 * c.getRed());
-                    int g = (int) (255 * c.getGreen());
-                    int b = (int) (255 * c.getBlue());
-                    
-                    if (r == 255 && g == 0 && b == 255) {
-                        ret = false;
-                    }}
+                    if (x <= getWidth() - 1 && y <= getHeight() - 1) {
+                        ColorRGBA c = ir.getPixel(x, getHeight() - y);
+                        int r = (int) (255 * c.getRed());
+                        int g = (int) (255 * c.getGreen());
+                        int b = (int) (255 * c.getBlue());
+
+                        if (r == 255 && g == 0 && b == 255) {
+                            ret = false;
+                        }
+                    }
                 }
             }
-        
+        } catch (Exception e) {
+        }
         return ret;
 
-    }}
+    }
+}
