@@ -60,7 +60,7 @@ public class IllegalImmigrant extends AbstractControl {
             sphereDirection.multLocal(speedFactor);
             velocity.addLocal(sphereDirection);
             //Kontrolliert geschwindigkeit damit nicht außer kontrolle bewegt wird ( macht komische Ellipsen)
-            velocity.multLocal(0.8f);
+            velocity.multLocal(0.9f);
             //Bewegt und KOntrolliert GEschwindikeit damit auf allen pcs gleich
             spatial.move(velocity.mult(0.1f * tpf));
             if (checkPointPosition.distance(spatial.getLocalTranslation()) < 1f) {

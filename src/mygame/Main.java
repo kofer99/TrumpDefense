@@ -54,6 +54,7 @@ public class Main extends SimpleApplication {
     private boolean showCursor = false;
     private Geometry cursor;
     private WaveSpawner spawner;
+    private boolean previewCount = true;
     private ArrayList towers = new ArrayList();
 
     @Override
@@ -81,7 +82,7 @@ public class Main extends SimpleApplication {
             updateCursor();
         }
         spawner.update();
-        for(Object o : towers) {
+        for (Object o : towers) {
             Tower t = (Tower) o;
             t.update();
         }
@@ -197,34 +198,51 @@ public class Main extends SimpleApplication {
         public void onAction(String name, boolean keyPressed, float tpf) {
             if (name.equals("Pause") && !keyPressed) {
             } else if (name.equals("left") && keyPressed) {
+
                 if ("tower".equals(peter)) {
                     Vector3f position = getMousePosition();
                     if (map.towerplace(position, fsq) == true) {
                         towers.add(new Tower(position));
                         destroyCursor();
                         peter = "nischt";
+                       
                     } else {
                     }
+                     previewCount = false;
                 }
             } else if (name.equals("tower") && keyPressed) {
+                //check if the TowerPlace Button was already pressed if so then it says it wasn't pressed and destroys the Cursor
+             if (previewCount == false && cursor != null) {
+                    destroyCursor();
+                    previewCount = true;
+                    peter ="nischt";
+                }else{
+             
                 peter = "tower";
                 initCursor();
-            }
+                previewCount = false;
+                
+            }}
         }
     };
+
     public TdMap getTdMap() {
         return map;
-        
+
     }
+
     public Quad getFloor() {
         return fsq;
     }
+
     public void attachToRootNode(Geometry g) {
         rootNode.attachChild(g);
     }
+
     public WaveSpawner getSpawner() {
         return spawner;
     }
+
     public void removeTower(Tower t) {
         towers.remove(t);
     }
