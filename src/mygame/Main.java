@@ -56,6 +56,7 @@ public class Main extends SimpleApplication {
     private WaveSpawner spawner;
     private boolean previewCount = true;
     private ArrayList towers = new ArrayList();
+    Tower preview = null;
 
     @Override
     public void simpleInitApp() {
@@ -88,7 +89,11 @@ public class Main extends SimpleApplication {
         }
     }
 
-    private void initCursor() {
+    private void towerPreview(Tower t) {
+        initCursor(t.createGeometry());
+    }
+    
+    private void initCursor(Geometry g) {
         cursor = createBox(new Vector3f(0, 0, 0));
         rootNode.attachChild(cursor);
         showCursor = true;
@@ -166,11 +171,11 @@ public class Main extends SimpleApplication {
     }
 
     private void initKeys() {
-        inputManager.addMapping("pause", new KeyTrigger(KeyInput.KEY_P));
+        inputManager.addMapping("move", new KeyTrigger(KeyInput.KEY_M));
         inputManager.addMapping("tower", new KeyTrigger(KeyInput.KEY_J));
         inputManager.addMapping("left", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
         inputManager.addMapping("right", new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
-        inputManager.addListener(actionListener, "pause", "left", "right", "tower");
+        inputManager.addListener(actionListener, "move", "left", "right", "tower");
 
     }
 
@@ -196,33 +201,34 @@ public class Main extends SimpleApplication {
     }
     private ActionListener actionListener = new ActionListener() {
         public void onAction(String name, boolean keyPressed, float tpf) {
-            if (name.equals("Pause") && !keyPressed) {
+            if (name.equals("move")) {
+                flyCam.setEnabled(true);
+                inputManager.setCursorVisible(false);
+                flyCam.setMoveSpeed(100);
+                flyCam.setRotationSpeed(5);
             } else if (name.equals("left") && keyPressed) {
-
                 if ("tower".equals(peter)) {
                     Vector3f position = getMousePosition();
                     if (map.towerplace(position, fsq) == true) {
-                        towers.add(new Tower(position));
+                        preview.init(position);
+                        towers.add(preview);
                         destroyCursor();
                         peter = "nischt";
-                       
                     } else {
                     }
-                     previewCount = false;
                 }
             } else if (name.equals("tower") && keyPressed) {
-                //check if the TowerPlace Button was already pressed if so then it says it wasn't pressed and destroys the Cursor
-             if (previewCount == false && cursor != null) {
-                    destroyCursor();
-                    previewCount = true;
-                    peter ="nischt";
-                }else{
-             
-                peter = "tower";
-                initCursor();
-                previewCount = false;
-                
-            }}
+                if(peter.equals("nischt")) {
+                    peter = "tower";
+                    preview = new Tower();
+                    towerPreview(preview);
+                }
+            }  else if (name.equals("right") && keyPressed) {
+                if (peter.equals("tower")) {
+                    destroyTowerPreview();
+                    peter = "nischt";
+                }
+            }
         }
     };
 
@@ -244,6 +250,11 @@ public class Main extends SimpleApplication {
     }
 
     public void removeTower(Tower t) {
-        towers.remove(t);
+    }
+        
+        
+    private void destroyTowerPreview() {
+        preview = null;
+        destroyCursor();
     }
 }

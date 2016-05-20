@@ -22,11 +22,22 @@ class Tower{
     private float range = 20f;
     private WaveSpawner s;
     
-    public Tower(Vector3f position) {
+    public Tower() {
+    }
+    
+    public void init(Vector3f position) {
         geom = Main.instance.createBox(position);
         Main.instance.attachToRootNode(geom);
         startTime = System.currentTimeMillis();
         s = Main.instance.getSpawner();
+    }
+    
+    /** für die Vorschau bevor der Turm platziert wird
+     * 
+     */
+    public Geometry createGeometry() {
+        return Main.instance.createBox(Vector3f.ZERO);
+        
     }
     
     public void update() {
