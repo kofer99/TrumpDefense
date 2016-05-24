@@ -28,7 +28,7 @@ import java.util.ArrayList;
 /**
  * test
  *
- * @author normenhansen
+ * @author normenhansen, Lukas
  */
 public class Main extends SimpleApplication {
 
@@ -57,6 +57,7 @@ public class Main extends SimpleApplication {
     private boolean previewCount = true;
     private ArrayList towers = new ArrayList();
     Tower preview = null;
+    HUD hud;
 
     @Override
     public void simpleInitApp() {
@@ -75,6 +76,8 @@ public class Main extends SimpleApplication {
         shootables.attachChild(cubes);
         rootNode.attachChild(shootables);
         spawner = new WaveSpawner(2000);
+
+        hud = new HUD(assetManager, inputManager, audioRenderer, guiViewPort);
     }
 
     @Override
@@ -181,6 +184,7 @@ public class Main extends SimpleApplication {
 
     protected Geometry makeFloor() {
         // https://hub.jmonkeyengine.org/t/how-to-set-a-background-texture/22996
+        // TODO: Die map ueberlappt noch mit der UI
         float w = this.getContext().getSettings().getWidth();
         float h = this.getContext().getSettings().getHeight();
         float ratio = w / h;
