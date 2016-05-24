@@ -49,8 +49,6 @@ public class Main extends SimpleApplication {
     private int sphere_nr = 0;
     private float speedFactor_Ball = 30f;
     private TdMap map;
-    //Turm, der gerade platziert wird (oder nischt)
-    private String peter = "nischt";
     private boolean showCursor = false;
     private Geometry cursor;
     private WaveSpawner spawner;
@@ -77,7 +75,7 @@ public class Main extends SimpleApplication {
         rootNode.attachChild(shootables);
         spawner = new WaveSpawner(2000);
 
-        hud = new HUD(assetManager, inputManager, audioRenderer, guiViewPort);
+        hud = new HUD(this, assetManager, inputManager, audioRenderer, guiViewPort);
     }
 
     @Override
@@ -179,7 +177,6 @@ public class Main extends SimpleApplication {
         inputManager.addMapping("left", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
         inputManager.addMapping("right", new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
         inputManager.addListener(actionListener, "move", "left", "right", "tower");
-
     }
 
     protected Geometry makeFloor() {
@@ -211,26 +208,25 @@ public class Main extends SimpleApplication {
                 flyCam.setMoveSpeed(100);
                 flyCam.setRotationSpeed(5);
             } else if (name.equals("left") && keyPressed) {
-                if ("tower".equals(peter)) {
+                if (hud.CurrentTower.equals("Marine")) {
                     Vector3f position = getMousePosition();
                     if (map.towerplace(position, fsq) == true) {
                         preview.init(position);
                         towers.add(preview);
                         destroyCursor();
-                        peter = "nischt";
+                        hud.CurrentTower = "";
                     } else {
                     }
                 }
             } else if (name.equals("tower") && keyPressed) {
-                if(peter.equals("nischt")) {
-                    peter = "tower";
-                    preview = new Tower();
-                    towerPreview(preview);
+                if(hud.CurrentTower.equals("")) {
+                    hud.CurrentTower = "Marine";
+                    CreateTowerPreview();
                 }
             }  else if (name.equals("right") && keyPressed) {
-                if (peter.equals("tower")) {
+                if (hud.CurrentTower.equals("Marine")) {
                     destroyTowerPreview();
-                    peter = "nischt";
+                    hud.CurrentTower = "";
                 }
             }
         }
@@ -255,8 +251,12 @@ public class Main extends SimpleApplication {
 
     public void removeTower(Tower t) {
     }
-        
-        
+
+    public void CreateTowerPreview() {
+        preview = new Tower();
+        towerPreview(preview);
+    }
+
     private void destroyTowerPreview() {
         preview = null;
         destroyCursor();

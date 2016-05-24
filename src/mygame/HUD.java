@@ -19,10 +19,14 @@ import com.jme3.niftygui.NiftyJmeDisplay;
  * @author Amir, Lukas
  */
 public class HUD extends AbstractAppState implements ScreenController {
+    public String CurrentTower = "";
+
     NiftyJmeDisplay niftyDisplay;
     Nifty nifty;
+    Main main;
 
-    public HUD(final AssetManager assetManager, final InputManager inputManager, final AudioRenderer audioRenderer, final ViewPort guiViewPort) {
+    public HUD(Main main, final AssetManager assetManager, final InputManager inputManager, final AudioRenderer audioRenderer, final ViewPort guiViewPort) {
+        this.main = main;
         niftyDisplay = new NiftyJmeDisplay(assetManager, inputManager, audioRenderer, guiViewPort);
         guiViewPort.addProcessor(niftyDisplay);
         nifty = niftyDisplay.getNifty();
@@ -40,7 +44,12 @@ public class HUD extends AbstractAppState implements ScreenController {
     public void onEndScreen() {
         
     }
-    
+
+    public void placeMarineTower() {
+        CurrentTower = "Marine";
+        main.CreateTowerPreview();
+    }
+
     public void red() {
         System.out.println("Make America great again!");
       //  test.changeColor();
