@@ -28,7 +28,7 @@ import java.util.ArrayList;
 /**
  * test
  *
- * @author normenhansen
+ * @author normenhansen, Lukas
  */
 public class Main extends SimpleApplication {
 
@@ -49,14 +49,13 @@ public class Main extends SimpleApplication {
     private int sphere_nr = 0;
     private float speedFactor_Ball = 30f;
     private TdMap map;
-    //Turm, der gerade platziert wird (oder nischt)
-    private String peter = "nischt";
     private boolean showCursor = false;
     private Geometry cursor;
     private WaveSpawner spawner;
     private boolean previewCount = true;
     private ArrayList towers = new ArrayList();
     Tower preview = null;
+    HUD hud;
 
     @Override
     public void simpleInitApp() {
@@ -75,6 +74,8 @@ public class Main extends SimpleApplication {
         shootables.attachChild(cubes);
         rootNode.attachChild(shootables);
         spawner = new WaveSpawner(2000);
+
+        hud = new HUD(this, assetManager, inputManager, audioRenderer, guiViewPort);
     }
 
     @Override
@@ -176,11 +177,11 @@ public class Main extends SimpleApplication {
         inputManager.addMapping("left", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
         inputManager.addMapping("right", new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
         inputManager.addListener(actionListener, "move", "left", "right", "tower");
-
     }
 
     protected Geometry makeFloor() {
         // https://hub.jmonkeyengine.org/t/how-to-set-a-background-texture/22996
+        // TODO: Die map ueberlappt noch mit der UI
         float w = this.getContext().getSettings().getWidth();
         float h = this.getContext().getSettings().getHeight();
         float ratio = w / h;
@@ -207,26 +208,25 @@ public class Main extends SimpleApplication {
                 flyCam.setMoveSpeed(100);
                 flyCam.setRotationSpeed(5);
             } else if (name.equals("left") && keyPressed) {
-                if ("tower".equals(peter)) {
+                if (hud.CurrentTower.equals("Marine")) {
                     Vector3f position = getMousePosition();
                     if (map.towerplace(position, fsq) == true) {
                         preview.init(position);
                         towers.add(preview);
                         destroyCursor();
-                        peter = "nischt";
+                        hud.CurrentTower = "";
                     } else {
                     }
                 }
             } else if (name.equals("tower") && keyPressed) {
-                if(peter.equals("nischt")) {
-                    peter = "tower";
-                    preview = new Tower();
-                    towerPreview(preview);
+                if(hud.CurrentTower.equals("")) {
+                    hud.CurrentTower = "Marine";
+                    CreateTowerPreview();
                 }
             }  else if (name.equals("right") && keyPressed) {
-                if (peter.equals("tower")) {
+                if (hud.CurrentTower.equals("Marine")) {
                     destroyTowerPreview();
-                    peter = "nischt";
+                    hud.CurrentTower = "";
                 }
             }
         }
@@ -251,8 +251,12 @@ public class Main extends SimpleApplication {
 
     public void removeTower(Tower t) {
     }
-        
-        
+
+    public void CreateTowerPreview() {
+        preview = new Tower();
+        towerPreview(preview);
+    }
+
     private void destroyTowerPreview() {
         preview = null;
         destroyCursor();

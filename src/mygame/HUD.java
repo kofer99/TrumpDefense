@@ -4,30 +4,34 @@
  */
 package mygame;
 
-import com.jme3.app.Application;
-import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
-import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
-import com.jme3.bullet.BulletAppState;
+import com.jme3.audio.AudioRenderer;
 import com.jme3.input.InputManager;
-import com.jme3.material.Material;
-import com.jme3.math.ColorRGBA;
 import com.jme3.renderer.ViewPort;
-import com.jme3.scene.Geometry;
-import com.jme3.scene.Node;
-import com.jme3.scene.shape.Box;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
+import com.jme3.niftygui.NiftyJmeDisplay;
 
 /**
  *
- * @author Amir
+ * @author Amir, Lukas
  */
 public class HUD extends AbstractAppState implements ScreenController {
-    
-    
+    public String CurrentTower = "";
+
+    NiftyJmeDisplay niftyDisplay;
+    Nifty nifty;
+    Main main;
+
+    public HUD(Main main, final AssetManager assetManager, final InputManager inputManager, final AudioRenderer audioRenderer, final ViewPort guiViewPort) {
+        this.main = main;
+        niftyDisplay = new NiftyJmeDisplay(assetManager, inputManager, audioRenderer, guiViewPort);
+        guiViewPort.addProcessor(niftyDisplay);
+        nifty = niftyDisplay.getNifty();
+        nifty.fromXml("Interface/newNiftyGui.xml", "start", this);
+    }
 
     public void bind(Nifty nifty, Screen screen) {
         
@@ -40,7 +44,12 @@ public class HUD extends AbstractAppState implements ScreenController {
     public void onEndScreen() {
         
     }
-    
+
+    public void placeMarineTower() {
+        CurrentTower = "Marine";
+        main.CreateTowerPreview();
+    }
+
     public void red() {
         System.out.println("Make America great again!");
       //  test.changeColor();
