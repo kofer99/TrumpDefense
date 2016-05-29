@@ -28,7 +28,7 @@ import java.util.ArrayList;
 /**
  * test
  *
- * @author normenhansen, Lukas
+ * @author Daniel, Lukas, Amir
  */
 public class Main extends SimpleApplication {
 

@@ -12,7 +12,7 @@ import com.jme3.scene.control.AbstractControl;
 
 /**
  *
- * @author Amir
+ * @author Amir, Daniel
  */
 class Projectile extends AbstractControl {
 

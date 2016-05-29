@@ -9,7 +9,7 @@ import com.jme3.scene.Geometry;
 
 /**
  *
- * @author Amir
+ * @author Amir, Daniel
  */
 class Tower{
     private Geometry geom;
