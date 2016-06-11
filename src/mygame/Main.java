@@ -8,6 +8,7 @@ import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
+import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Ray;
@@ -17,6 +18,7 @@ import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.queue.RenderQueue.Bucket;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 import com.jme3.scene.Spatial.CullHint;
 import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Quad;
@@ -56,6 +58,7 @@ public class Main extends SimpleApplication {
     private ArrayList towers = new ArrayList();
     Tower preview = null;
     HUD hud;
+    private DirectionalLight dl;
 
     @Override
     public void simpleInitApp() {
@@ -75,6 +78,11 @@ public class Main extends SimpleApplication {
         rootNode.attachChild(shootables);
         spawner = new WaveSpawner(2000);
 
+        dl = new DirectionalLight();
+        dl.setDirection(new Vector3f(-0.6f,-1,-0.6f).normalizeLocal());
+        dl.setColor(new ColorRGBA(0.10f, 0.22f, 0.44f, 1.0f));
+        rootNode.addLight(dl);
+        
         hud = new HUD(this, assetManager, inputManager, audioRenderer, guiViewPort);
     }
 
@@ -102,6 +110,9 @@ public class Main extends SimpleApplication {
     }
 
     private void destroyCursor() {
+        if(cursor == null) {
+            return;
+        }
         rootNode.detachChild(cursor);
         cursor = null;
         showCursor = false;
@@ -150,6 +161,7 @@ public class Main extends SimpleApplication {
 //    }
     public Geometry createBox(Vector3f as) {
         Box b = new Box(1f, 1f, 1f);
+       
         Geometry boxs = new Geometry("Box", b);
         Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.setColor("Color", ColorRGBA.Blue);
@@ -208,26 +220,17 @@ public class Main extends SimpleApplication {
                 flyCam.setMoveSpeed(100);
                 flyCam.setRotationSpeed(5);
             } else if (name.equals("left") && keyPressed) {
-                if (hud.CurrentTower.equals("Marine")) {
+                if(hud.CurrentTower != ""){
                     Vector3f position = getMousePosition();
                     if (map.towerplace(position, fsq) == true) {
                         preview.init(position);
                         towers.add(preview);
                         destroyCursor();
                         hud.CurrentTower = "";
-                    } else {
-                    }
-                }
-            } else if (name.equals("tower") && keyPressed) {
-                if(hud.CurrentTower.equals("")) {
-                    hud.CurrentTower = "Marine";
-                    CreateTowerPreview();
-                }
-            }  else if (name.equals("right") && keyPressed) {
-                if (hud.CurrentTower.equals("Marine")) {
+                    } }
+            }else if (name.equals("right") && keyPressed) {
                     destroyTowerPreview();
                     hud.CurrentTower = "";
-                }
             }
         }
     };
@@ -244,6 +247,10 @@ public class Main extends SimpleApplication {
     public void attachToRootNode(Geometry g) {
         rootNode.attachChild(g);
     }
+    
+    public void attachToRootNode(Spatial g) {
+        rootNode.attachChild(g);
+    }
 
     public WaveSpawner getSpawner() {
         return spawner;
@@ -253,12 +260,35 @@ public class Main extends SimpleApplication {
     }
 
     public void CreateTowerPreview() {
-        preview = new Tower();
+        preview = new Tower(hud.CurrentTower);
         towerPreview(preview);
+    }
+    
+    public Spatial getTowerGeom(String peter) {
+        Spatial geom = null;
+        if(peter.equals("Police")) {
+            geom = (Spatial) assetManager.loadModel("Models/unicornfuv2.j3o");
+            geom.rotate((float) Math.toRadians(90), 0, 0);
+        }else if(peter.equals("Marine")) {
+            geom = (Spatial) assetManager.loadModel("Models/trumpdefensetower.j3o");
+            geom.rotate((float) Math.toRadians(90), 0, 0);
+        }
+        return geom;
     }
 
     private void destroyTowerPreview() {
         preview = null;
         destroyCursor();
+    }
+
+    Spatial createProjectile(Vector3f position) {
+        // Box b = new Box(1f, 1f, 1f);
+       
+        Spatial boxs = assetManager.loadModel("Models/laserschuss.j3o");
+                //Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        //mat.setColor("Color", ColorRGBA.Blue);
+        //boxs.setMaterial(mat);
+        boxs.setLocalTranslation(position);
+        return boxs;
     }
 }

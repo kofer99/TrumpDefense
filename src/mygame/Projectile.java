@@ -8,6 +8,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Geometry;
+import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 
 /**
@@ -16,15 +17,18 @@ import com.jme3.scene.control.AbstractControl;
  */
 class Projectile extends AbstractControl {
 
-    private Geometry geom;
+    private Spatial geom;
     private IllegalImmigrant target;
     private float speedFactor = 60f;
-    private final float distance = 0.1f;
+    private final float distance = 0.3f;
     private Vector3f velocity = new Vector3f(0, 0, 0);
+    private String peter = "Normal";
 
-    public Projectile(IllegalImmigrant target, Tower tower) {
+    public Projectile(IllegalImmigrant target, Tower tower, String peter) {
+        this.peter = peter;
+        target.setTargeted(true);
         this.target = target;
-        geom = Main.instance.createSphere(tower.getPosition());
+        geom = Main.instance.createProjectile(tower.getPosition());
         geom.addControl(this);
         Main.instance.attachToRootNode(geom);
     }
@@ -35,9 +39,10 @@ class Projectile extends AbstractControl {
         Vector3f direction = targetPosition.subtract(spatial.getLocalTranslation());
         direction.normalizeLocal();
         direction.multLocal(speedFactor);
+        
         velocity.addLocal(direction);
         //Kontrolliert geschwindigkeit damit nicht außer kontrolle bewegt wird ( macht komische Ellipsen)
-        velocity.multLocal(0.9f);
+        velocity.multLocal(0.86f);
         //Bewegt und KOntrolliert GEschwindikeit damit auf allen pcs gleich
         spatial.move(velocity.mult(0.15f * tpf));
         if (target.getPosition().distance(spatial.getLocalTranslation()) < distance) {
@@ -51,5 +56,9 @@ class Projectile extends AbstractControl {
 
     public void remove() {
         spatial.removeFromParent();
+    }
+    
+    public String getPeter() {
+        return peter;
     }
 }

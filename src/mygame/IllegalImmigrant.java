@@ -19,7 +19,9 @@ import com.jme3.scene.shape.Sphere;
  * @author Amir
  */
 public class IllegalImmigrant extends AbstractControl {
-
+    
+    
+    public boolean targeted = false;
     private Geometry geom;
     private int[] xn;
     private int[] yn;
@@ -33,6 +35,7 @@ public class IllegalImmigrant extends AbstractControl {
     private float speedFactor;
     private TdMap m;
     private WaveSpawner w;
+    private float taserTicks = 0.0f;
 
     public IllegalImmigrant(WaveSpawner w) {
         m = Main.instance.getTdMap();
@@ -49,11 +52,13 @@ public class IllegalImmigrant extends AbstractControl {
         Main.instance.attachToRootNode(geom);
         geom.addControl(this);
         this.w = w;
+        
     }
 
     @Override
     protected void controlUpdate(float tpf) {
-        if (counter < nrCheckpoints) {
+        if(taserTicks == 0.0f) {
+            if (counter < nrCheckpoints) {
             Vector3f checkPointPosition = new Vector3f(-(bgObject.getWidth() / 2) + xn[counter] * ratioxr, -(bgObject.getHeight() / 2) + yn[counter] * ratioyr, spatial.getLocalTranslation().getZ());
             Vector3f sphereDirection = checkPointPosition.subtract(spatial.getLocalTranslation());
             sphereDirection.normalizeLocal();
@@ -70,7 +75,15 @@ public class IllegalImmigrant extends AbstractControl {
         } else {
             spatial.removeFromParent();
             w.remove(this);
+         }
+        } else{
+            taserTicks -= tpf;
+            if(taserTicks < 0.0f) {
+                taserTicks = 0.0f;
+                targeted = false;
+            }
         }
+        
     }
 
     @Override
@@ -79,8 +92,14 @@ public class IllegalImmigrant extends AbstractControl {
     }
     
     public void hit(Projectile p) {
-        remove();
-        p.remove();
+        if(p.getPeter() == "Normal") {
+            remove();
+            p.remove();
+        }else if(p.getPeter() == "Taser") {
+            taserTicks = 2.0f;
+            p.remove();
+        }
+        
     }
     
     public Vector3f getPosition() {
@@ -90,5 +109,13 @@ public class IllegalImmigrant extends AbstractControl {
     public void remove() {
         spatial.removeFromParent();
         w.remove(this);
+    }
+    
+    public boolean isTargeted() {
+        return targeted;
+    }
+    
+    public void setTargeted(boolean targeted) {
+        this.targeted = targeted;
     }
 }

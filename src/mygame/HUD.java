@@ -52,6 +52,10 @@ public class HUD extends AbstractAppState implements ScreenController {
 
     public void red() {
         System.out.println("Make America great again!");
+        CurrentTower ="Police";
+        main.CreateTowerPreview();
+                
       //  test.changeColor();
     }
+    
 }
