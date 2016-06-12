@@ -4,9 +4,14 @@
  */
 package mygame;
 
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  *
@@ -51,7 +56,15 @@ class Tower{
             IllegalImmigrant i = getNearestImmigrant();
             if(i != null) {
                 if(peter=="Police") {
-                    new Projectile(i, this, "Taser");
+                    //new Projectile(i, this, "Taser");              
+                    Spatial rainbow = Main.instance.createRainbowLaser(geom.getLocalTranslation(), i.getPosition());
+                    Main.instance.attachToRootNode(rainbow);
+                    i.hitWithLaser();
+                    int laserRemoveMillis = 100;
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(new Date());
+                    cal.add(Calendar.MILLISECOND, laserRemoveMillis);
+                    new Timer().schedule(new LaserRemoveTask(rainbow), cal.getTime() );
                 }else if(peter=="Marine") {
                     new Projectile(i, this, "Normal");
                 }
@@ -69,7 +82,6 @@ class Tower{
             if(d < range && (d < distance || distance == -1)&& (i.targeted==false || peter != "Police")) {
                 nearest = i;
                 distance = d;
-                System.out.println("sees");
             }
         }
         if(nearest != null) {
@@ -81,4 +93,15 @@ class Tower{
     public Vector3f getPosition() {
         return geom.getLocalTranslation();
     }
+}
+class LaserRemoveTask extends TimerTask {
+    private Spatial s;
+    public LaserRemoveTask(Spatial s) {
+        this.s = s;
+    }
+    @Override
+    public void run() {
+        Main.instance.detachFromRootNode(s);
+    }
+    
 }
