@@ -118,4 +118,8 @@ public class IllegalImmigrant extends AbstractControl {
     public void setTargeted(boolean targeted) {
         this.targeted = targeted;
     }
+    
+    public void hitWithLaser() {
+        remove();
+    }
 }
