@@ -4,30 +4,22 @@
  */
 package mygame;
 
-import com.jme3.export.JmeExporter;
-import com.jme3.export.JmeImporter;
-import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
-import com.jme3.scene.control.Control;
-import java.io.IOException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  *
- * @author Amir, Daniel
+ * @author Amir, Daniel, Lukas
  */
-class Tower extends AbstractControl{
+class Tower extends AbstractControl {
     public static final int TYPE_MARINE = 0;
     public static final int TYPE_POLICE = 1;
     public static final int TYPE_UNICORN = 2;
+    public static final int TYPE_MURICA = 3;
     private Spatial geom;
     private int firerate;
     private int damage;
@@ -36,13 +28,18 @@ class Tower extends AbstractControl{
     private long startTime;
     private float range = 20f;
     private WaveSpawner s;
+    private int projectileType;
     public int type = 0;
-    
-    
+
     public Tower(int type) {
         this.type = type;
+
+        if (type == TYPE_UNICORN)
+            projectileType = Projectile.TYPE_LASER;
+        else if (type == TYPE_MARINE)
+            projectileType = Projectile.TYPE_NORMAL;
     }
-    
+
     public void init(Vector3f position) {
         geom = Main.instance.getTowerGeom(type);
         geom.setLocalTranslation(position);
@@ -51,9 +48,7 @@ class Tower extends AbstractControl{
         s = Main.instance.getSpawner();
         geom.addControl(this);
     }
-    
-    
-    
+
     /** für die Vorschau bevor der Turm platziert wird
      * 
      */
@@ -63,15 +58,11 @@ class Tower extends AbstractControl{
 
     @Override
     protected void controlUpdate(float tpf) {
-        if((System.currentTimeMillis() - startTime) > cooldown) {
+        if (System.currentTimeMillis() - startTime >= cooldown) {
             IllegalImmigrant i = getNearestImmigrant();
-            if(i != null) {
-                if(type==TYPE_UNICORN) {
-                    new Projectile(i, this, Projectile.TYPE_LASER);
-                }else if(type==TYPE_MARINE) {
-                    new Projectile(i, this, Projectile.TYPE_NORMAL);
-                }
-            }
+            if (i != null)
+                new Projectile(i, this, projectileType);
+
             startTime = System.currentTimeMillis();
         }
     }
@@ -81,11 +72,10 @@ class Tower extends AbstractControl{
       
     }
 
-    
     public IllegalImmigrant getNearestImmigrant() {
         float distance = -1.0f;
         IllegalImmigrant nearest = null;
-        for(Object o : s.getImmigrants()) {
+        for (Object o : s.getImmigrants()) {
             IllegalImmigrant i = (IllegalImmigrant) o;
             float d = getPosition().distance(i.getPosition());
             switch(type) {
@@ -111,12 +101,13 @@ class Tower extends AbstractControl{
                     break;
             }
         }
-        if(nearest != null) {
+
+        if (nearest != null) {
             nearest.targeted=true;
         }
         return nearest;
     }
-    
+
     public Vector3f getPosition() {
         return geom.getLocalTranslation();
     }

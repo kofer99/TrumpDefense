@@ -6,20 +6,33 @@
     <screen id="start" controller="mygame.HUD">
         <layer id="layer" childLayout="center">
             <panel width="20%" height="100%" backgroundColor="#44ff" align="right" childLayout="center">
-                <image align="center" valign="center" width="100%" height="100%" filename="Interface/muricaflag.png"></image>
-                <panel width="20%" height="20%" backgroundColor="#0000" align="center" childLayout="center">
-                    <image align="center" valign="center" filename="Interface/bigredbutton.png"></image>
-                    <control name="button" label="Big red button" id="red" align="center" valign="center"
-                        visibleToMouse="true" childLayout="center"> 
-                        <interact onClick="red()"/>
-                    </control>
-                </panel>
-                <panel width="68%" height="20%" backgroundColor="#0000" align="center" valign="bottom" childLayout="center">
-                    <image align="center" valign="center" filename="Interface/marines.png" width="100%" height="100%"></image>
-                    <control name="button" label="Marine Tower" id="marine" align="center" valign="center"
-                        visibleToMouse="true" childLayout="center">
-                        <interact onClick="placeMarineTower()"/>
-                    </control>
+                <image width="100%" height="100%" filename="Interface/muricaflag.png"></image>
+                <!-- Die Tuerme -->
+                <panel width="100%" height="40%" backgroundColor="#0000" align="center" childLayout="absolute">
+                    <panel width="50%" height="35%" x="0px" y="0px" backgroundColor="#0000" childLayout="absolute">
+                        <image filename="Interface/marines.png" width="100%" height="100%" x="0px" y="0px"></image>
+                        <control width="100%" height="100%" x="0px" y="0px" name="button" label="Marine Tower" id="marine" visibleToMouse="true" childLayout="center">
+                            <interact onClick="placeTower(0)"/>
+                        </control>
+                    </panel>
+                    <panel width="50%" height="35%" x="60px" y="0px" backgroundColor="#0000" childLayout="absolute">
+                        <image filename="Interface/einhorn.png" width="100%" height="100%" x="0px" y="0px"></image>
+                        <control width="100%" height="100%" x="0px" y="0px" name="button" label="Marine Tower" id="marine" visibleToMouse="true" childLayout="center">
+                            <interact onClick="placeTower(2)"/>
+                        </control>
+                    </panel>
+                    <panel width="50%" height="35%" x="0px" y="80px" backgroundColor="#0000" childLayout="absolute">
+                        <image filename="Interface/polizei.png" width="100%" height="100%" x="0px" y="0px"></image>
+                        <control width="100%" height="100%" x="0px" y="0px" name="button" label="Marine Tower" id="marine" visibleToMouse="true" childLayout="center">
+                            <interact onClick="placeTower(1)"/>
+                        </control>
+                    </panel>
+                    <panel width="50%" height="35%" x="60px" y="80px" backgroundColor="#0000" childLayout="absolute">
+                        <image filename="Interface/murica.png" width="100%" height="100%" x="0px" y="0px"></image>
+                        <control width="100%" height="100%" x="0px" y="0px" name="button" label="Marine Tower" id="marine" visibleToMouse="true" childLayout="center">
+                            <interact onClick="placeTower(3)"/>
+                        </control>
+                    </panel>
                 </panel>
             </panel>
         </layer>
