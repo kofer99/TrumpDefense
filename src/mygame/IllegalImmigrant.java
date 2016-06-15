@@ -92,14 +92,18 @@ public class IllegalImmigrant extends AbstractControl {
     }
     
     public void hit(Projectile p) {
-        if(p.getPeter() == "Normal") {
-            remove();
-            p.remove();
-        }else if(p.getPeter() == "Taser") {
-            taserTicks = 2.0f;
-            p.remove();
-        }
-        
+        switch(p.getType()) {
+             case Projectile.TYPE_LASER:
+                remove();
+                break;
+            case Projectile.TYPE_NORMAL:
+                remove();
+                break;
+            case Projectile.TYPE_TASER:
+                taserTicks = 2.0f;
+                targeted = false;
+                break;
+        } 
     }
     
     public Vector3f getPosition() {
@@ -119,7 +123,7 @@ public class IllegalImmigrant extends AbstractControl {
         this.targeted = targeted;
     }
     
-    public void hitWithLaser() {
-        remove();
+    public float getTaserTicks() {
+        return taserTicks;
     }
 }
