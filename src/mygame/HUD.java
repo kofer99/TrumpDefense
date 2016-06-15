@@ -19,7 +19,7 @@ import com.jme3.niftygui.NiftyJmeDisplay;
  * @author Amir, Lukas
  */
 public class HUD extends AbstractAppState implements ScreenController {
-    public String CurrentTower = "";
+    public int CurrentTower = -1;
 
     NiftyJmeDisplay niftyDisplay;
     Nifty nifty;
@@ -46,13 +46,13 @@ public class HUD extends AbstractAppState implements ScreenController {
     }
 
     public void placeMarineTower() {
-        CurrentTower = "Marine";
+        CurrentTower = Tower.TYPE_MARINE;
         main.CreateTowerPreview();
     }
 
     public void red() {
         System.out.println("Make America great again!");
-        CurrentTower ="Police";
+        CurrentTower = Tower.TYPE_UNICORN;
         main.CreateTowerPreview();
                 
       //  test.changeColor();

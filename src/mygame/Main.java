@@ -60,7 +60,6 @@ public class Main extends SimpleApplication {
     private Geometry cursor;
     private WaveSpawner spawner;
     private boolean previewCount = true;
-    private ArrayList towers = new ArrayList();
     Tower preview = null;
     HUD hud;
     private DirectionalLight dl;
@@ -97,10 +96,6 @@ public class Main extends SimpleApplication {
             updateCursor();
         }
         spawner.update();
-        for (Object o : towers) {
-            Tower t = (Tower) o;
-            t.update();
-        }
     }
 
     private void towerPreview(Tower t) {
@@ -225,17 +220,16 @@ public class Main extends SimpleApplication {
                 flyCam.setMoveSpeed(100);
                 flyCam.setRotationSpeed(5);
             } else if (name.equals("left") && keyPressed) {
-                if(hud.CurrentTower != ""){
+                if(hud.CurrentTower != -1){
                     Vector3f position = getMousePosition();
                     if (map.towerplace(position, fsq) == true) {
                         preview.init(position);
-                        towers.add(preview);
                         destroyCursor();
-                        hud.CurrentTower = "";
+                        hud.CurrentTower = -1;
                     } }
             }else if (name.equals("right") && keyPressed) {
                     destroyTowerPreview();
-                    hud.CurrentTower = "";
+                    hud.CurrentTower = -1;
             }
         }
     };
@@ -269,14 +263,17 @@ public class Main extends SimpleApplication {
         towerPreview(preview);
     }
     
-    public Spatial getTowerGeom(String peter) {
+    public Spatial getTowerGeom(int type) {
         Spatial geom = null;
-        if(peter.equals("Police")) {
-            geom = (Spatial) assetManager.loadModel("Models/unicornfuv2.j3o");
-            geom.rotate((float) Math.toRadians(90), 0, 0);
-        }else if(peter.equals("Marine")) {
-            geom = (Spatial) assetManager.loadModel("Models/trumpdefensetower.j3o");
-            geom.rotate((float) Math.toRadians(90), 0, 0);
+        switch(type) {
+            case Tower.TYPE_UNICORN:
+                geom = (Spatial) assetManager.loadModel("Models/unicornfuv2.j3o");
+                geom.rotate((float) Math.toRadians(90), 0, 0);
+                break;
+            case Tower.TYPE_MARINE:
+                geom = (Spatial) assetManager.loadModel("Models/trumpdefensetower.j3o");
+                geom.rotate((float) Math.toRadians(90), 0, 0);
+                break;
         }
         return geom;
     }
@@ -286,16 +283,19 @@ public class Main extends SimpleApplication {
         destroyCursor();
     }
 
-    Spatial createProjectile(Vector3f position) {
+    Spatial createProjectile(Vector3f position, int type, Vector3f targetPosition) {
         // Box b = new Box(1f, 1f, 1f);
-       
-        Spatial boxs = assetManager.loadModel("Models/laserschuss.j3o");
-                //Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+       switch(type) {
+            case Projectile.TYPE_NORMAL:
+                return createSphere(position);
+            case Projectile.TYPE_LASER:
+                return createRainbowLaser(position, targetPosition);
+        }
+        //Spatial boxs = assetManager.loadModel("Models/laserschuss.j3o");
+        //Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         //mat.setColor("Color", ColorRGBA.Blue);
         //boxs.setMaterial(mat);
-        boxs.setLocalTranslation(position);
-        
-        return boxs;
+       return null;
     }
     
     Spatial createRainbowLaser(Vector3f pos1, Vector3f pos2) {
