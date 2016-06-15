@@ -274,6 +274,11 @@ public class Main extends SimpleApplication {
                 geom = (Spatial) assetManager.loadModel("Models/trumpdefensetower.j3o");
                 geom.rotate((float) Math.toRadians(90), 0, 0);
                 break;
+            default:
+                // Generiere einen Marinetower als default, bis wir die anderen haben
+                geom = (Spatial) assetManager.loadModel("Models/trumpdefensetower.j3o");
+                geom.rotate((float) Math.toRadians(90), 0, 0);
+                break;
         }
         return geom;
     }
