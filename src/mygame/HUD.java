@@ -45,17 +45,27 @@ public class HUD extends AbstractAppState implements ScreenController {
         
     }
 
-    public void placeMarineTower() {
-        CurrentTower = Tower.TYPE_MARINE;
-        main.CreateTowerPreview();
-    }
+    public void placeTower(String type) {
+        CurrentTower = -1;
 
-    public void red() {
-        System.out.println("Make America great again!");
-        CurrentTower = Tower.TYPE_UNICORN;
+        switch (Integer.parseInt(type)) {
+            case 0:
+                CurrentTower = Tower.TYPE_MARINE;
+                break;
+            case 1:
+                CurrentTower = Tower.TYPE_POLICE;
+                break;
+            case 2:
+                CurrentTower = Tower.TYPE_UNICORN;
+                break;
+            case 3:
+                CurrentTower = Tower.TYPE_MURICA;
+                break;
+        }
+
+        if (CurrentTower == -1)
+            throw new IllegalArgumentException("Failed to parse given towertype in placeTower.");
+
         main.CreateTowerPreview();
-                
-      //  test.changeColor();
     }
-    
 }
