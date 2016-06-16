@@ -68,4 +68,10 @@ public class HUD extends AbstractAppState implements ScreenController {
 
         main.CreateTowerPreview();
     }
+
+    public void selectUpgrade(String type) {
+        // 0 == cap
+        // 1 == toupe
+        // 2 == flag
+    }
 }

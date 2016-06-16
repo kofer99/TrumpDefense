@@ -34,6 +34,27 @@
                         </control>
                     </panel>
                 </panel>
+                <!-- Die Upgrades -->
+                <panel width="100%" height="40%" backgroundColor="#0000" x="0px" y="55%" childLayout="absolute">
+                    <panel width="50%" height="40%" x="0px" y="0px" backgroundColor="#0000" childLayout="absolute">
+                        <image filename="Interface/cap.png" width="100%" height="100%" x="0px" y="0px"></image>
+                        <control width="100%" height="100%" x="0px" y="0px" name="button" label="Marine Tower" id="marine" visibleToMouse="true" childLayout="center">
+                            <interact onClick="selectUpgrade(0)"/>
+                        </control>
+                    </panel>
+                    <panel width="50%" height="40%" x="50%" y="0px" backgroundColor="#0000" childLayout="absolute">
+                        <image filename="Interface/toupet.png" width="100%" height="100%" x="0px" y="0px"></image>
+                        <control width="100%" height="100%" x="0px" y="0px" name="button" label="Marine Tower" id="marine" visibleToMouse="true" childLayout="center">
+                            <interact onClick="selectUpgrade(1)"/>
+                        </control>
+                    </panel>
+                    <panel width="50%" height="40%" x="25%" y="35%" backgroundColor="#0000" childLayout="absolute">
+                        <image filename="Interface/flag.png" width="100%" height="100%" x="0px" y="0px"></image>
+                        <control width="100%" height="100%" x="0px" y="0px" name="button" label="Marine Tower" id="marine" visibleToMouse="true" childLayout="center">
+                            <interact onClick="selectUpgrade(2)"/>
+                        </control>
+                    </panel>
+                </panel>
             </panel>
         </layer>
     </screen>
