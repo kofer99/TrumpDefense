@@ -30,7 +30,7 @@ public class HUD extends AbstractAppState implements ScreenController {
         niftyDisplay = new NiftyJmeDisplay(assetManager, inputManager, audioRenderer, guiViewPort);
         guiViewPort.addProcessor(niftyDisplay);
         nifty = niftyDisplay.getNifty();
-        nifty.fromXml("Interface/newNiftyGui.xml", "start", this);
+        nifty.fromXml("Interface/IngameUI.xml", "start", this);
     }
 
     public void bind(Nifty nifty, Screen screen) {
