@@ -43,7 +43,7 @@
                         </control>
                     </panel>
                     <panel width="50%" height="40%" x="50%" y="0px" backgroundColor="#0000" childLayout="absolute">
-                        <image filename="Interface/toupet.png" width="100%" height="100%" x="0px" y="0px"></image>
+                        <image filename="Interface/toupe.png" width="100%" height="100%" x="0px" y="0px"></image>
                         <control width="100%" height="100%" x="0px" y="0px" name="button" label="Marine Tower" id="marine" visibleToMouse="true" childLayout="center">
                             <interact onClick="selectUpgrade(1)"/>
                         </control>
@@ -52,6 +52,33 @@
                         <image filename="Interface/flag.png" width="100%" height="100%" x="0px" y="0px"></image>
                         <control width="100%" height="100%" x="0px" y="0px" name="button" label="Marine Tower" id="marine" visibleToMouse="true" childLayout="center">
                             <interact onClick="selectUpgrade(2)"/>
+                        </control>
+                    </panel>
+                </panel>
+                <!-- Ingame menue -->
+                <panel width="100%" height="40%" backgroundColor="#0000" x="0px" y="89%" childLayout="absolute">
+                    <panel width="25%" height="20%" x="1%" y="0px" backgroundColor="#0000" childLayout="absolute">
+                        <image filename="Interface/menu.png" width="100%" height="100%" x="0px" y="0px"></image>
+                        <control width="100%" height="100%" x="0px" y="0px" name="button" label="Marine Tower" id="marine" visibleToMouse="true" childLayout="center">
+                            <interact onClick="openMenu()"/>
+                        </control>
+                    </panel>
+                    <panel width="25%" height="20%" x="25%" y="0px" backgroundColor="#0000" childLayout="absolute">
+                        <image filename="Interface/pause.png" width="100%" height="100%" x="0px" y="0px"></image>
+                        <control width="100%" height="100%" x="0px" y="0px" name="button" label="Marine Tower" id="marine" visibleToMouse="true" childLayout="center">
+                            <interact onClick="pause()"/>
+                        </control>
+                    </panel>
+                    <panel width="25%" height="20%" x="50%" y="0px" backgroundColor="#0000" childLayout="absolute">
+                        <image filename="Interface/nextWave.png" width="100%" height="100%" x="0px" y="0px"></image>
+                        <control width="100%" height="100%" x="0px" y="0px" name="button" label="Marine Tower" id="marine" visibleToMouse="true" childLayout="center">
+                            <interact onClick="nextWave()"/>
+                        </control>
+                    </panel>
+                    <panel width="25%" height="20%" x="75%" y="0px" backgroundColor="#0000" childLayout="absolute">
+                        <image filename="Interface/openSkilltree.png" width="100%" height="100%" x="0px" y="0px"></image>
+                        <control width="100%" height="100%" x="0px" y="0px" name="button" label="Marine Tower" id="marine" visibleToMouse="true" childLayout="center">
+                            <interact onClick="openSkilltree()"/>
                         </control>
                     </panel>
                 </panel>

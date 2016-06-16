@@ -74,4 +74,20 @@ public class HUD extends AbstractAppState implements ScreenController {
         // 1 == toupe
         // 2 == flag
     }
+
+    public void openMenu() {
+        
+    }
+
+    public void pause() {
+        
+    }
+
+    public void nextWave() {
+        
+    }
+
+    public void openSkilltree() {
+        
+    }
 }
