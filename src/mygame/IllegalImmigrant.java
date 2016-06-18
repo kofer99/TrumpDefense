@@ -19,8 +19,7 @@ import com.jme3.scene.shape.Sphere;
  * @author Amir
  */
 public class IllegalImmigrant extends AbstractControl {
-    
-    
+
     public boolean targeted = false;
     private Geometry geom;
     private int[] xn;
@@ -36,6 +35,7 @@ public class IllegalImmigrant extends AbstractControl {
     private TdMap m;
     private WaveSpawner w;
     private float taserTicks = 0.0f;
+    private float normalTpf = -1;
 
     public IllegalImmigrant(WaveSpawner w) {
         m = Main.instance.getTdMap();
@@ -48,52 +48,71 @@ public class IllegalImmigrant extends AbstractControl {
         ratioxr = bgObject.getWidth() / m.getWidth();
         ratioyr = bgObject.getHeight() / m.getHeight();
         Vector3f spawn = new Vector3f(-(bgObject.getWidth() / 2) + xn[0] * ratioxr, -(bgObject.getHeight() / 2) + yn[0] * ratioyr, 0.0f);
-        geom = Main.instance.createSphere(spawn);
+        geom = GeometryCreator.instance.createSphere(spawn);
         Main.instance.attachToRootNode(geom);
         geom.addControl(this);
         this.w = w;
-        
+
     }
 
     @Override
     protected void controlUpdate(float tpf) {
-        if(taserTicks == 0.0f) {
+        float fixedTpf = getFixedTpf(tpf);
+        if (taserTicks == 0.0f) {
             if (counter < nrCheckpoints) {
-            Vector3f checkPointPosition = new Vector3f(-(bgObject.getWidth() / 2) + xn[counter] * ratioxr, -(bgObject.getHeight() / 2) + yn[counter] * ratioyr, spatial.getLocalTranslation().getZ());
-            Vector3f sphereDirection = checkPointPosition.subtract(spatial.getLocalTranslation());
-            sphereDirection.normalizeLocal();
-            sphereDirection.multLocal(speedFactor);
-            velocity.addLocal(sphereDirection);
-            //Kontrolliert geschwindigkeit damit nicht außer kontrolle bewegt wird ( macht komische Ellipsen)
-            velocity.multLocal(0.9f);
-            //Bewegt und KOntrolliert GEschwindikeit damit auf allen pcs gleich
-            spatial.move(velocity.mult(0.1f * tpf));
-            if (checkPointPosition.distance(spatial.getLocalTranslation()) < 1f) {
-                counter++;
-            }
+                Vector3f checkPointPosition = new Vector3f(-(bgObject.getWidth() / 2) + xn[counter] * ratioxr, -(bgObject.getHeight() / 2) + yn[counter] * ratioyr, spatial.getLocalTranslation().getZ());
+                Vector3f sphereDirection = checkPointPosition.subtract(spatial.getLocalTranslation());
+                sphereDirection.normalizeLocal();
+                sphereDirection.multLocal(speedFactor);
+                velocity.addLocal(sphereDirection);
+                //Kontrolliert geschwindigkeit damit nicht außer kontrolle bewegt wird ( macht komische Ellipsen)
+                velocity.multLocal(0.9f);
+                //Bewegt und KOntrolliert GEschwindikeit damit auf allen pcs gleich
+                spatial.move(velocity.mult(0.1f * fixedTpf));
+                if (checkPointPosition.distance(spatial.getLocalTranslation()) < 1f) {
+                    counter++;
+                }
 
+            } else {
+                spatial.removeFromParent();
+                w.remove(this);
+            }
         } else {
-            spatial.removeFromParent();
-            w.remove(this);
-         }
-        } else{
             taserTicks -= tpf;
-            if(taserTicks < 0.0f) {
+            if (taserTicks < 0.0f) {
                 taserTicks = 0.0f;
                 targeted = false;
             }
         }
-        
+
+    }
+    //fix für die verbuggten Positionen wenn das Fenster minimiert wird
+
+    private float getFixedTpf(float tpf) {
+        float fixedTpf = tpf;
+        int i = 60;
+        //wie viel mal länger ein Tick maximal dauern darf
+        float maxTimeMult = 3;
+
+        if (normalTpf == -1) {
+            normalTpf = tpf;
+        }
+
+        if (tpf > (maxTimeMult * normalTpf)) {
+            fixedTpf = normalTpf;
+        } else {
+            normalTpf = ((normalTpf * (i - 1)) + tpf) / i;
+        }
+        return fixedTpf;
     }
 
     @Override
     protected void controlRender(RenderManager rm, ViewPort vp) {
-
     }
-    
+
     public void hit(Projectile p) {
-        switch(p.getType()) {
-             case Projectile.TYPE_LASER:
+        switch (p.getType()) {
+            case Projectile.TYPE_LASER:
                 remove();
                 break;
             case Projectile.TYPE_NORMAL:
@@ -103,26 +122,26 @@ public class IllegalImmigrant extends AbstractControl {
                 taserTicks = 2.0f;
                 targeted = false;
                 break;
-        } 
+        }
     }
-    
+
     public Vector3f getPosition() {
         return spatial.getLocalTranslation();
     }
-    
+
     public void remove() {
         spatial.removeFromParent();
         w.remove(this);
     }
-    
+
     public boolean isTargeted() {
         return targeted;
     }
-    
+
     public void setTargeted(boolean targeted) {
         this.targeted = targeted;
     }
-    
+
     public float getTaserTicks() {
         return taserTicks;
     }

@@ -41,7 +41,7 @@ class Tower extends AbstractControl {
     }
 
     public void init(Vector3f position) {
-        geom = Main.instance.getTowerGeom(type);
+        geom = GeometryCreator.instance.createTowerGeom(type);
         geom.setLocalTranslation(position);
         Main.instance.attachToRootNode(geom);
         startTime = System.currentTimeMillis();
@@ -53,7 +53,7 @@ class Tower extends AbstractControl {
      * 
      */
     public Geometry createGeometry() {
-        return Main.instance.createBox(Vector3f.ZERO);
+        return GeometryCreator.instance.createBox(Vector3f.ZERO);
     }
 
     @Override
