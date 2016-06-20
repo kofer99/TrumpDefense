@@ -36,6 +36,7 @@ public class IllegalImmigrant extends AbstractControl {
     private WaveSpawner w;
     private float taserTicks = 0.0f;
     private float normalTpf = -1;
+    public Vector3f sphereDirection;
 
     public IllegalImmigrant(WaveSpawner w) {
         m = Main.instance.getTdMap();
@@ -61,7 +62,8 @@ public class IllegalImmigrant extends AbstractControl {
         if (taserTicks == 0.0f) {
             if (counter < nrCheckpoints) {
                 Vector3f checkPointPosition = new Vector3f(-(bgObject.getWidth() / 2) + xn[counter] * ratioxr, -(bgObject.getHeight() / 2) + yn[counter] * ratioyr, spatial.getLocalTranslation().getZ());
-                Vector3f sphereDirection = checkPointPosition.subtract(spatial.getLocalTranslation());
+                
+                sphereDirection = checkPointPosition.subtract(spatial.getLocalTranslation());
                 sphereDirection.normalizeLocal();
                 sphereDirection.multLocal(speedFactor);
                 velocity.addLocal(sphereDirection);
@@ -74,6 +76,7 @@ public class IllegalImmigrant extends AbstractControl {
                 }
 
             } else {
+                Main.instance.reduceHealth();
                 spatial.removeFromParent();
                 w.remove(this);
             }
@@ -127,6 +130,9 @@ public class IllegalImmigrant extends AbstractControl {
 
     public Vector3f getPosition() {
         return spatial.getLocalTranslation();
+    }
+      public Vector3f getSpheredirection() {
+        return sphereDirection;
     }
 
     public void remove() {
