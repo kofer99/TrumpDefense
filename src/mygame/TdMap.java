@@ -26,7 +26,6 @@ public class TdMap {
     private int[] nodex;
     private int[] nodey;
     private int[] distances;
-    private int nodecount;
     private ImageRaster ir;
 
     public TdMap(Image fieldmap, int fieldsx, int fieldsy) {

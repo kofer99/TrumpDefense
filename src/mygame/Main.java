@@ -3,6 +3,7 @@ package mygame;
 import com.jme3.app.SimpleApplication;
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
+import com.jme3.font.BitmapText;
 import com.jme3.input.KeyInput;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
@@ -46,12 +47,14 @@ public class Main extends SimpleApplication {
     }
 
     Sound sound;
+    private int Health ;
     protected Geometry player;
     protected Geometry blas;
     private Node spheres;
     Boolean isRunning = true;
     protected Node shootables;
     private Node cubes;
+    private BitmapText healthbar;
     public static Main instance;
     private Geometry backgroundGeom;
     private Quad fsq;
@@ -86,7 +89,12 @@ public class Main extends SimpleApplication {
         shootables.attachChild(cubes);
         rootNode.attachChild(shootables);
         spawner = new WaveSpawner(2000);
-
+            Health = 10;
+            
+        healthbar = new BitmapText(guiFont);
+        healthbar.setText(""+Health);
+        guiNode.attachChild(healthbar);
+        
         dl = new DirectionalLight();
         dl.setDirection(new Vector3f(0.0f, 0.0f, -1.0f).normalizeLocal());
         dl.setColor(ColorRGBA.White);
@@ -105,16 +113,23 @@ public class Main extends SimpleApplication {
         sound.startMusic();
 
         geometryCreator = new GeometryCreator();
+    
     }
 
     @Override
     public void simpleUpdate(float tpf) {
+        if(Health<=0){
+        int[] i = new int[2];
+        i[3] = 88;
+        }
         if (showCursor) {
             updateCursor();
         }
         spawner.update(tpf);
     }
-
+public void reduceHealth(){
+Health--;
+}
     private void towerPreview(Tower t) {
         initCursor(t.createGeometry());
     }
