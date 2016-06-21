@@ -27,7 +27,7 @@ public class GeometryCreator {
 
     public GeometryCreator() {
         instance = this;
-        assetManager = Main.instance.getAssetManager();
+        assetManager = MainGame.instance.getAssetManager();
     }
     
     public Spatial createTowerGeom(int type) {

@@ -35,7 +35,7 @@ class Projectile extends AbstractControl {
         this.target = target;
         geom = GeometryCreator.instance.createProjectile(tower.getPosition(), type, target.getPosition());
         geom.addControl(this);
-        Main.instance.attachToRootNode(geom);
+        MainGame.instance.attachToRootNode(geom);
         if(type == TYPE_LASER) {
             target.hit(this);
             lifetime = 100;

@@ -138,7 +138,7 @@ public class TdMap {
             Vector2f temp = new Vector2f();
             temp.setX(nodex[i]);
             temp.setY(nodey[i]);
-            ret[i] = Main.instance.getCamera().getWorldCoordinates(temp, 0f).clone();
+            ret[i] = MainGame.instance.getCamera().getWorldCoordinates(temp, 0f).clone();
         }
         return ret;
     }

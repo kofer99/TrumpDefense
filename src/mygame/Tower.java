@@ -46,9 +46,9 @@ class Tower extends AbstractControl {
     public void init(Vector3f position) {
         geom = GeometryCreator.instance.createTowerGeom(type);
         geom.setLocalTranslation(position);
-        Main.instance.attachToRootNode(geom);
+        MainGame.instance.attachToRootNode(geom);
         startTime = System.currentTimeMillis();
-        s = Main.instance.getSpawner();
+        s = MainGame.instance.getSpawner();
         geom.addControl(this);
     }
 
