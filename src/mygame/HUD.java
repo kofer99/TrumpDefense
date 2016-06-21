@@ -56,8 +56,7 @@ public class HUD extends AbstractAppState implements ScreenController {
                 CurrentTower = Tower.TYPE_POLICE;
                 break;
             case 2:
-                CurrentTower = 2;
-               Main.instance.CreateTowerPreview();
+                CurrentTower = Tower.TYPE_UNICORN;
                 break;
             case 3:
                 CurrentTower = Tower.TYPE_MURICA;

@@ -62,7 +62,7 @@ public class Main extends SimpleApplication {
     private float speedFactor_Ball = 30f;
     private TdMap map;
     private boolean showCursor = false;
-    private Spatial cursor;
+    private Geometry cursor;
     private WaveSpawner spawner;
     private boolean previewCount = true;
     Tower preview = null;
@@ -130,10 +130,10 @@ public void reduceHealth(){
 Health--;
 }
     private void towerPreview(Tower t) {
-        initCursor(t.getSpatial());
+        initCursor(t.createGeometry());
     }
 
-    private void initCursor(Spatial g) {
+    private void initCursor(Geometry g) {
         cursor = g;
         rootNode.attachChild(cursor);
         showCursor = true;
@@ -168,9 +168,9 @@ Health--;
         Vector3f position = getMousePosition();
         cursor.setLocalTranslation(position);
         if (map.towerplace(position, fsq) == true) {
-            //cursor.   .getMaterial().setColor("Color", ColorRGBA.Green);
+            cursor.getMaterial().setColor("Color", ColorRGBA.Green);
         } else {
-         //   cursor.getMaterial().setColor("Color", ColorRGBA.Red);
+            cursor.getMaterial().setColor("Color", ColorRGBA.Red);
         }
     }
 
@@ -257,7 +257,7 @@ Health--;
     }
 
     public void CreateTowerPreview() {
-        preview = new Tower();
+        preview = new Tower(hud.CurrentTower);
         towerPreview(preview);
     }
 
