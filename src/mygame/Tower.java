@@ -106,7 +106,7 @@ class Tower extends AbstractControl {
     public boolean IsInRange(IllegalImmigrant targeted, boolean ignoreTargeted) {
 
         // Ignoriere schon angezielte Ziele
-        if (!ignoreTargeted && !targeted.targeted) {
+        if (!ignoreTargeted && targeted.targeted) {
             return false;
         }
 
