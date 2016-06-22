@@ -1,10 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package mygame;
 
-import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
@@ -25,22 +20,16 @@ class Tower extends AbstractControl {
     private Spatial geom;
     private int cooldown = 1000;
     private long startTime;
-    private float visibility = 40f;
-    private float range = 20f;
+    private float range = 40f;
     private WaveSpawner s;
     private int projectileType;
     public int type = 0;
-    private Quaternion q;
     private IllegalImmigrant target;
 
     public Tower(int type) {
         this.type = type;
 
-        if (type == TYPE_UNICORN) {
-            projectileType = Projectile.TYPE_LASER;
-        } else if (type == TYPE_MARINE) {
-            projectileType = Projectile.TYPE_NORMAL;
-        }
+        projectileType = type == TYPE_UNICORN ? Projectile.TYPE_LASER : Projectile.TYPE_NORMAL;
     }
 
     public void init(Vector3f position) {
@@ -52,10 +41,7 @@ class Tower extends AbstractControl {
         geom.addControl(this);
     }
 
-    /**
-     * für die Vorschau bevor der Turm platziert wird
-     *
-     */
+    // Für die Vorschau bevor der Turm platziert wird
     public Geometry createGeometry() {
         return GeometryCreator.instance.createBox(Vector3f.ZERO);
     }
@@ -65,53 +51,47 @@ class Tower extends AbstractControl {
         if (target == null) {
             target = getNearestImmigrant();
         }
-        if (target != null) {
-            spatial.lookAt(target.getPosition(), new Vector3f(0, 0, 1));
 
+        // Versuche nicht jemanden auserhalb der Reichweite zu erwischen
+        if (target != null && !IsInRange(target, true)) {
+            target.targeted = false;
+            target = getNearestImmigrant();
+        }
 
-            if (target.getPosition().distance(spatial.getLocalTranslation()) <= range) {
-                if (System.currentTimeMillis() - startTime >= cooldown) {
+        // Immernoch kein target gefunden, tue nichts
+        if (target == null) {
+            return;
+        }
 
-                    if (target != null) {
-                        new Projectile(target, this, projectileType);
-                        target = getNearestImmigrant();
-
-                        startTime = System.currentTimeMillis();
-                    }
-                }
-            }
+        spatial.lookAt(target.getPosition(), new Vector3f(0, 0, 1));
+        if (System.currentTimeMillis() - startTime >= cooldown) {
+            new Projectile(target, this, projectileType);
+            startTime = System.currentTimeMillis();
+            target = getNearestImmigrant();
         }
     }
 
     @Override
-    protected void controlRender(RenderManager rm, ViewPort vp) {
-    }
+    protected void controlRender(RenderManager rm, ViewPort vp) { }
 
     public IllegalImmigrant getNearestImmigrant() {
-        float distance = -1.0f;
         IllegalImmigrant nearest = null;
         for (Object o : s.getImmigrants()) {
             IllegalImmigrant i = (IllegalImmigrant) o;
-            float d = getPosition().distance(i.getPosition());
             switch (type) {
                 case TYPE_MARINE:
-                    if (d < visibility && (d < distance || distance == -1) && (i.targeted == false)) {
+                    if (IsInRange(i, false)) {
                         nearest = i;
-                        distance = d;
                     }
                     break;
                 case TYPE_POLICE:
-                    if (d < visibility && (d < distance || distance == -1)) {
-                        if (i.getTaserTicks() == 0) {
-                            nearest = i;
-                            distance = d;
-                        }
+                    if (IsInRange(i, true) && i.getTaserTicks() == 0) {
+                        nearest = i;
                     }
                     break;
                 case TYPE_UNICORN:
-                    if (d < visibility && (d < distance || distance == -1) && (i.targeted == false)) {
+                    if (IsInRange(i, false)) {
                         nearest = i;
-                        distance = d;
                     }
                     break;
             }
@@ -121,6 +101,16 @@ class Tower extends AbstractControl {
             nearest.targeted = true;
         }
         return nearest;
+    }
+
+    public boolean IsInRange(IllegalImmigrant targeted, boolean ignoreTargeted) {
+
+        // Ignoriere schon angezielte Ziele
+        if (!ignoreTargeted && !targeted.targeted) {
+            return false;
+        }
+
+        return getPosition().distance(targeted.getPosition()) < range || range == -1;
     }
 
     public Vector3f getPosition() {

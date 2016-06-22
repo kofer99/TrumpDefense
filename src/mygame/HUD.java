@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package mygame;
 
 import com.jme3.app.state.AbstractAppState;
@@ -33,17 +29,9 @@ public class HUD extends AbstractAppState implements ScreenController {
         nifty.fromXml("Interface/IngameUI.xml", "start", this);
     }
 
-    public void bind(Nifty nifty, Screen screen) {
-        
-    }
-
-    public void onStartScreen() {
-        
-    }
-
-    public void onEndScreen() {
-        
-    }
+    public void bind(Nifty nifty, Screen screen) { }
+    public void onStartScreen() { }
+    public void onEndScreen() { }
 
     public void placeTower(String type) {
         CurrentTower = -1;

@@ -11,25 +11,25 @@
                 <panel width="100%" height="40%" x="0px" y="15%" backgroundColor="#0000" childLayout="absolute">
                     <panel width="50%" height="45%" x="0px" y="0px" backgroundColor="#0000" childLayout="absolute">
                         <image filename="Interface/marines.png" width="100%" height="100%" x="0px" y="0px"></image>
-                        <control width="100%" height="100%" x="0px" y="0px" name="button" label="Marine Tower" id="marine" visibleToMouse="true" childLayout="center">
+                        <control width="100%" height="100%" x="0px" y="0px" name="button" label="Marine Turm" id="marine" visibleToMouse="true" childLayout="center">
                             <interact onClick="placeTower(0)"/>
                         </control>
                     </panel>
                     <panel width="50%" height="45%" x="50%" y="0px" backgroundColor="#0000" childLayout="absolute">
                         <image filename="Interface/einhorn.png" width="100%" height="100%" x="0px" y="0px"></image>
-                        <control width="100%" height="100%" x="0px" y="0px" name="button" label="Marine Tower" id="marine" visibleToMouse="true" childLayout="center">
+                        <control width="100%" height="100%" x="0px" y="0px" name="button" label="Einhorn Turm" id="einhorn" visibleToMouse="true" childLayout="center">
                             <interact onClick="placeTower(2)"/>
                         </control>
                     </panel>
                     <panel width="50%" height="45%" x="0px" y="50%" backgroundColor="#0000" childLayout="absolute">
                         <image filename="Interface/polizei.png" width="100%" height="100%" x="0px" y="0px"></image>
-                        <control width="100%" height="100%" x="0px" y="0px" name="button" label="Marine Tower" id="marine" visibleToMouse="true" childLayout="center">
+                        <control width="100%" height="100%" x="0px" y="0px" name="button" label="Polizei Tower" id="polizei" visibleToMouse="true" childLayout="center">
                             <interact onClick="placeTower(1)"/>
                         </control>
                     </panel>
                     <panel width="50%" height="45%" x="50%" y="50%" backgroundColor="#0000" childLayout="absolute">
                         <image filename="Interface/murica.png" width="100%" height="100%" x="0px" y="0px"></image>
-                        <control width="100%" height="100%" x="0px" y="0px" name="button" label="Marine Tower" id="marine" visibleToMouse="true" childLayout="center">
+                        <control width="100%" height="100%" x="0px" y="0px" name="button" label="Murica Turm" id="murica" visibleToMouse="true" childLayout="center">
                             <interact onClick="placeTower(3)"/>
                         </control>
                     </panel>
@@ -38,19 +38,19 @@
                 <panel width="100%" height="40%" backgroundColor="#0000" x="0px" y="55%" childLayout="absolute">
                     <panel width="50%" height="40%" x="0px" y="0px" backgroundColor="#0000" childLayout="absolute">
                         <image filename="Interface/cap.png" width="100%" height="100%" x="0px" y="0px"></image>
-                        <control width="100%" height="100%" x="0px" y="0px" name="button" label="Marine Tower" id="marine" visibleToMouse="true" childLayout="center">
+                        <control width="100%" height="100%" x="0px" y="0px" name="button" label="Cap Upgrade" id="cap" visibleToMouse="true" childLayout="center">
                             <interact onClick="selectUpgrade(0)"/>
                         </control>
                     </panel>
                     <panel width="50%" height="40%" x="50%" y="0px" backgroundColor="#0000" childLayout="absolute">
                         <image filename="Interface/toupe.png" width="100%" height="100%" x="0px" y="0px"></image>
-                        <control width="100%" height="100%" x="0px" y="0px" name="button" label="Marine Tower" id="marine" visibleToMouse="true" childLayout="center">
+                        <control width="100%" height="100%" x="0px" y="0px" name="button" label="Toupe Upgrade" id="toupe" visibleToMouse="true" childLayout="center">
                             <interact onClick="selectUpgrade(1)"/>
                         </control>
                     </panel>
                     <panel width="50%" height="40%" x="25%" y="35%" backgroundColor="#0000" childLayout="absolute">
                         <image filename="Interface/flag.png" width="100%" height="100%" x="0px" y="0px"></image>
-                        <control width="100%" height="100%" x="0px" y="0px" name="button" label="Marine Tower" id="marine" visibleToMouse="true" childLayout="center">
+                        <control width="100%" height="100%" x="0px" y="0px" name="button" label="Flag Upgrade" id="flag" visibleToMouse="true" childLayout="center">
                             <interact onClick="selectUpgrade(2)"/>
                         </control>
                     </panel>
@@ -59,25 +59,25 @@
                 <panel width="100%" height="40%" backgroundColor="#0000" x="0px" y="89%" childLayout="absolute">
                     <panel width="25%" height="20%" x="1%" y="0px" backgroundColor="#0000" childLayout="absolute">
                         <image filename="Interface/menu.png" width="100%" height="100%" x="0px" y="0px"></image>
-                        <control width="100%" height="100%" x="0px" y="0px" name="button" label="Marine Tower" id="marine" visibleToMouse="true" childLayout="center">
+                        <control width="100%" height="100%" x="0px" y="0px" name="button" label="Open menu" id="menu" visibleToMouse="true" childLayout="center">
                             <interact onClick="openMenu()"/>
                         </control>
                     </panel>
                     <panel width="25%" height="20%" x="25%" y="0px" backgroundColor="#0000" childLayout="absolute">
                         <image filename="Interface/pause.png" width="100%" height="100%" x="0px" y="0px"></image>
-                        <control width="100%" height="100%" x="0px" y="0px" name="button" label="Marine Tower" id="marine" visibleToMouse="true" childLayout="center">
+                        <control width="100%" height="100%" x="0px" y="0px" name="button" label="Pause game" id="pause" visibleToMouse="true" childLayout="center">
                             <interact onClick="pause()"/>
                         </control>
                     </panel>
                     <panel width="25%" height="20%" x="50%" y="0px" backgroundColor="#0000" childLayout="absolute">
                         <image filename="Interface/nextWave.png" width="100%" height="100%" x="0px" y="0px"></image>
-                        <control width="100%" height="100%" x="0px" y="0px" name="button" label="Marine Tower" id="marine" visibleToMouse="true" childLayout="center">
+                        <control width="100%" height="100%" x="0px" y="0px" name="button" label="Send next wave" id="wave" visibleToMouse="true" childLayout="center">
                             <interact onClick="nextWave()"/>
                         </control>
                     </panel>
                     <panel width="25%" height="20%" x="75%" y="0px" backgroundColor="#0000" childLayout="absolute">
                         <image filename="Interface/openSkilltree.png" width="100%" height="100%" x="0px" y="0px"></image>
-                        <control width="100%" height="100%" x="0px" y="0px" name="button" label="Marine Tower" id="marine" visibleToMouse="true" childLayout="center">
+                        <control width="100%" height="100%" x="0px" y="0px" name="button" label="Open the skilltree" id="skill" visibleToMouse="true" childLayout="center">
                             <interact onClick="openSkilltree()"/>
                         </control>
                     </panel>

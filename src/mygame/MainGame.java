@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package mygame;
 
 import com.jme3.app.Application;
@@ -29,7 +25,6 @@ import com.jme3.math.Ray;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
-import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
@@ -38,7 +33,6 @@ import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Quad;
 import com.jme3.texture.Image;
 import com.jme3.texture.Texture;
-//import static mygame.Main.instance;
 
 /**
  *
@@ -48,9 +42,9 @@ public class MainGame extends AbstractAppState {
     private SimpleApplication app;
     private Node rootNode;
     private AssetManager assetManager;
-    
-        Sound sound;
-    private int Health ;
+
+    Sound sound;
+    private int Health;
     protected Geometry player;
     protected Geometry blas;
     private Node spheres;
@@ -81,30 +75,27 @@ public class MainGame extends AbstractAppState {
     private BitmapFont guiFont;
     private AudioRenderer audioRenderer;
     private ViewPort guiViewPort;
-    
 
-    
-   
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
-              super.initialize(stateManager, app); 
-      this.app = (SimpleApplication)app;   
-     this.rootNode= this.app.getRootNode();
-     this.assetManager =this.app.getAssetManager();
-     this.inputManager = this.app.getInputManager();
-     this.flyCam = this.app.getFlyByCamera(); 
-     this.cam = cam = this.app.getCamera();
-     this.guiNode = this.app.getGuiNode();
-     this.guiFont = new BitmapFont();
-     this.audioRenderer = this.app.getAudioRenderer();
-     this.guiViewPort = this.app.getGuiViewPort();
-             instance = this;
+        super.initialize(stateManager, app);
+        this.app = (SimpleApplication)app;
+        this.rootNode= this.app.getRootNode();
+        this.assetManager =this.app.getAssetManager();
+        this.inputManager = this.app.getInputManager();
+        this.flyCam = this.app.getFlyByCamera(); 
+        this.cam = cam = this.app.getCamera();
+        this.guiNode = this.app.getGuiNode();
+        this.guiFont = new BitmapFont();
+        this.audioRenderer = this.app.getAudioRenderer();
+        this.guiViewPort = this.app.getGuiViewPort();
+        instance = this;
         mapImage = assetManager.loadTexture("Textures/map1fields.png").getImage();
         map = new TdMap(mapImage, 15, 10);
-     
-      flyCam.setEnabled(false);
+
+        flyCam.setEnabled(false);
         inputManager.setCursorVisible(true);
-       
+
         cam.setLocation(new Vector3f(0, 0, 1f));
         initKeys();
         cubes = new Node("Cube");
@@ -115,12 +106,12 @@ public class MainGame extends AbstractAppState {
         shootables.attachChild(cubes);
         rootNode.attachChild(shootables);
         spawner = new WaveSpawner(2000);
-            Health = 10;
+        Health = 10;
             
-   //     healthbar = new BitmapText(guiFont);
-   //     healthbar.setText(""+Health);
-  //      guiNode.attachChild(healthbar);
-        
+        // healthbar = new BitmapText(guiFont);
+        // healthbar.setText(""+Health);
+        // guiNode.attachChild(healthbar);
+
         dl = new DirectionalLight();
         dl.setDirection(new Vector3f(0.0f, 0.0f, -1.0f).normalizeLocal());
         dl.setColor(ColorRGBA.White);
@@ -139,20 +130,21 @@ public class MainGame extends AbstractAppState {
         sound.startMusic();
 
         geometryCreator = new GeometryCreator();
-        //TODO: initialize your AppState, e.g. attach spatials to rootNode
-        //this is called on the OpenGL thread after the AppState has been attached
+        // TODO: initialize your AppState, e.g. attach spatials to rootNode
+        // this is called on the OpenGL thread after the AppState has been attached
     }
-    
+
     @Override
     public void update(float tpf) {
-        //TODO: implement behavior during runtime
-    
+
+        // TODO: implement behavior during runtime
         if (showCursor) {
             updateCursor();
         }
         spawner.update(tpf);
     }
-        private void towerPreview(Tower t) {
+
+    private void towerPreview(Tower t) {
         initCursor(t.createGeometry());
     }
 
@@ -167,6 +159,7 @@ public class MainGame extends AbstractAppState {
         if (cursor == null) {
             return;
         }
+
         rootNode.detachChild(cursor);
         cursor = null;
         showCursor = false;
@@ -196,8 +189,6 @@ public class MainGame extends AbstractAppState {
             cursor.getMaterial().setColor("Color", ColorRGBA.Red);
         }
     }
-    
-    
 
     private void initKeys() {
         inputManager.addMapping("move", new KeyTrigger(KeyInput.KEY_M));
@@ -213,9 +204,14 @@ public class MainGame extends AbstractAppState {
         float w = this.app.getContext().getSettings().getWidth();
         float h = this.app.getContext().getSettings().getHeight();
         float ratio = w / h;
-        cam.setLocation(Vector3f.ZERO.add(new Vector3f(0.0f, 0.0f, 102.5f)));//Move the Camera back
-        float camZ = cam.getLocation().getZ() - 17.5f; //No Idea why I need to subtract 17.5
+
+        // Move the Camera back
+        cam.setLocation(Vector3f.ZERO.add(new Vector3f(0.0f, 0.0f, 102.5f)));
+
+        // No Idea why I need to subtract 17.5
+        float camZ = cam.getLocation().getZ() - 17.5f;
         float width = camZ * ratio;
+
         Material backgroundMat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         Texture backgroundTex = assetManager.loadTexture("Textures/map1texture.png");
         backgroundMat.setTexture("ColorMap", backgroundTex);
@@ -225,7 +221,9 @@ public class MainGame extends AbstractAppState {
         backgroundGeom.setQueueBucket(RenderQueue.Bucket.Sky);
         backgroundGeom.setCullHint(Spatial.CullHint.Never);
         backgroundGeom.setMaterial(backgroundMat);
-        backgroundGeom.setLocalTranslation(-(width / 2), -(camZ / 2), 0); //Need to Divide by two because the quad origin is bottom left
+
+        // Need to Divide by two because the quad origin is bottom left
+        backgroundGeom.setLocalTranslation(-(width / 2), -(camZ / 2), 0);
         return backgroundGeom;
     }
     private ActionListener actionListener = new ActionListener() {
@@ -253,7 +251,6 @@ public class MainGame extends AbstractAppState {
 
     public TdMap getTdMap() {
         return map;
-
     }
 
     public Quad getFloor() {
@@ -288,16 +285,18 @@ public class MainGame extends AbstractAppState {
     public void detachFromRootNode(Spatial s) {
         rootNode.detachChild(s);
     }
+
     public void reduceHealth(){
-Health--;
-}
+        Health--;
+    }
+
     @Override
     public void cleanup() {
         super.cleanup();
         rootNode.detachAllChildren();
-        //TODO: clean up what you initialized in the initialize method,
-        //e.g. remove all spatials from rootNode
-        //this is called on the OpenGL thread after the AppState has been detached
+        // TODO: clean up what you initialized in the initialize method,
+        // e.g. remove all spatials from rootNode
+        // this is called on the OpenGL thread after the AppState has been detached
     }
 
     AssetManager getAssetManager() {
@@ -305,6 +304,6 @@ Health--;
     }
 
     Camera getCamera() {
-      return cam;
+        return cam;
     }
 }
