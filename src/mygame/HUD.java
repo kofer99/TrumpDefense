@@ -23,9 +23,9 @@ public class HUD extends AbstractAppState implements ScreenController {
 
     NiftyJmeDisplay niftyDisplay;
     Nifty nifty;
-    Main main;
+    MainGame main;
 
-    public HUD(Main main, final AssetManager assetManager, final InputManager inputManager, final AudioRenderer audioRenderer, final ViewPort guiViewPort) {
+    public HUD(MainGame main, final AssetManager assetManager, final InputManager inputManager, final AudioRenderer audioRenderer, final ViewPort guiViewPort) {
         this.main = main;
         niftyDisplay = new NiftyJmeDisplay(assetManager, inputManager, audioRenderer, guiViewPort);
         guiViewPort.addProcessor(niftyDisplay);
