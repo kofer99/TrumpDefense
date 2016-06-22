@@ -27,12 +27,13 @@ class Projectile extends AbstractControl {
     private Vector3f velocity = new Vector3f(0, 0, 0);
     private float lifetime = 0;
     private int type = -1;
+    private float normalTpf = -1;
 
     public Projectile(IllegalImmigrant target, Tower tower, int type) {
         this.type = type;
         target.setTargeted(true);
         this.target = target;
-        geom = Main.instance.createProjectile(tower.getPosition(), type, target.getPosition());
+        geom = GeometryCreator.instance.createProjectile(tower.getPosition(), type, target.getPosition());
         geom.addControl(this);
         Main.instance.attachToRootNode(geom);
         if(type == TYPE_LASER) {
@@ -61,6 +62,7 @@ class Projectile extends AbstractControl {
     }
     
     public void moveToTarget(float tpf) {
+        float fixedTpf = getFixedTpf(tpf);
         Vector3f targetPosition = target.getPosition();
         Vector3f direction = targetPosition.subtract(spatial.getLocalTranslation());
         direction.normalizeLocal();
@@ -69,10 +71,29 @@ class Projectile extends AbstractControl {
         //Kontrolliert geschwindigkeit damit nicht außer kontrolle bewegt wird ( macht komische Ellipsen)
         velocity.multLocal(0.86f);
         //Bewegt und KOntrolliert GEschwindikeit damit auf allen pcs gleich
-        spatial.move(velocity.mult(0.15f * tpf));
+        spatial.move(velocity.mult(0.15f * fixedTpf));
         if (target.getPosition().distance(spatial.getLocalTranslation()) < distance) {
             hit();
         }
+    }
+    //fix für die verbuggten Positionen wenn das Fenster minimiert wird
+
+    private float getFixedTpf(float tpf) {
+        float fixedTpf = tpf;
+        int i = 60;
+        //wie viel mal länger ein Tick maximal dauern darf
+        float maxTimeMult = 3;
+
+        if (normalTpf == -1) {
+            normalTpf = tpf;
+        }
+
+        if (tpf > (maxTimeMult * normalTpf)) {
+            fixedTpf = normalTpf;
+        } else {
+            normalTpf = ((normalTpf * (i - 1)) + tpf) / i;
+        }
+        return fixedTpf;
     }
     
     public void hit() {
