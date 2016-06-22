@@ -46,6 +46,17 @@ public class GeometryCreator {
         return geom;
     }
     
+    public Geometry createSmallBox(Vector3f as) {
+        Box b = new Box(0.01f, 0.01f, 0.01f);
+
+        Geometry boxs = new Geometry("Box", b);
+        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        mat.setColor("Color", ColorRGBA.Blue);
+        boxs.setMaterial(mat);
+        boxs.setLocalTranslation(as);
+        return boxs;
+    }
+    
     
     public Spatial createRainbowLaser(Vector3f pos1, Vector3f pos2) {
         Vector3f vec = pos2.subtract(pos1);
@@ -168,7 +179,7 @@ public class GeometryCreator {
             case Projectile.TYPE_NORMAL:
                 return createSphere(position);
             case Projectile.TYPE_LASER:
-                return createRainbowLaser(position, targetPosition);
+                return createSmallBox(position);
         }
        return null;
     }
