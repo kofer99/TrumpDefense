@@ -68,7 +68,7 @@ public class IllegalImmigrant extends AbstractControl {
                     counter++;
                 }
             } else {
-                Main.instance.reduceHealth(1);
+                MainGame.instance.reduceHealth(1);
                 spatial.removeFromParent();
                 w.remove(this);
             }

@@ -136,7 +136,10 @@ public class MainGame extends AbstractAppState {
 
     @Override
     public void update(float tpf) {
-
+        if (Health <= 0) {
+            Main.instance.closeAppState(this);
+           //this.stop();
+        }
         // TODO: implement behavior during runtime
         if (showCursor) {
             updateCursor();
@@ -305,5 +308,9 @@ public class MainGame extends AbstractAppState {
 
     Camera getCamera() {
         return cam;
+    }
+
+    void reduceHealth(int i) {
+     Health--;
     }
 }

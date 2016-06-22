@@ -1,6 +1,7 @@
 package mygame;
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.app.state.AbstractAppState;
 import com.jme3.renderer.RenderManager;
 
 /**
@@ -14,28 +15,31 @@ public class Main extends SimpleApplication {
         app.start();
     }
 
-    private int Health;
+
     public static Main instance;
 
     @Override
     public void simpleInitApp() {
         instance = this;
 
-        Health = 10;
+        
         stateManager.attach(new MainGame());
     }
-
+    public void closeAppState(AbstractAppState a){
+        stateManager.detach(a);
+    }
+       public void openAppState(AbstractAppState a){
+        stateManager.attach(a);
+    }
     @Override
     public void simpleUpdate(float tpf) {
-        if (Health <= 0) {
-            stateManager.detach(getStateManager().getState(MainGame.class));
+        if(stateManager.hasState(MainGame.instance)==false){
             this.stop();
         }
+       
     }
 
-    public void reduceHealth(int amount) {
-        Health -= amount;
-    }
+    
 
     @Override
     public void simpleRender(RenderManager rm) { }
