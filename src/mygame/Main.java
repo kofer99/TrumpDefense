@@ -8,6 +8,7 @@ import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
+import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState.FaceCullMode;
@@ -43,6 +44,8 @@ public class Main extends SimpleApplication {
         Main app = new Main();
         app.start();
     }
+
+    Sound sound ;
     protected Geometry player;
     protected Geometry blas;
     private Node spheres;
@@ -63,6 +66,7 @@ public class Main extends SimpleApplication {
     Tower preview = null;
     HUD hud;
     private DirectionalLight dl;
+    private DirectionalLight dl2;
 
     @Override
     public void simpleInitApp() {
@@ -86,8 +90,19 @@ public class Main extends SimpleApplication {
         dl.setDirection(new Vector3f(0.0f,0.0f,-1.0f).normalizeLocal());
         dl.setColor(ColorRGBA.White);
         rootNode.addLight(dl);
+
+        dl2 = new DirectionalLight();
+        dl2.setDirection(new Vector3f(0.0f,0.0f,1.0f).normalizeLocal());
+        dl2.setColor(ColorRGBA.White);
+        rootNode.addLight(dl2);
+        AmbientLight al = new AmbientLight();
+        al.setColor(ColorRGBA.White);
+        
+        rootNode.addLight(al);
         hud = new HUD(this, assetManager, inputManager, audioRenderer, guiViewPort);
         
+        sound = new Sound(assetManager);
+        sound.startMusic();
     }
 
     @Override
@@ -271,7 +286,7 @@ public class Main extends SimpleApplication {
                 geom.rotate((float) Math.toRadians(90), 0, 0);
                 break;
             case Tower.TYPE_MARINE:
-                geom = (Spatial) assetManager.loadModel("Models/trumpdefensetower.j3o");
+                geom = (Spatial) assetManager.loadModel("Models/Militower.j3o");
                 geom.rotate((float) Math.toRadians(90), 0, 0);
                 break;
             default:
