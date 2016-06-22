@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package mygame;
 
 import java.util.ArrayList;
@@ -11,7 +7,7 @@ import java.util.ArrayList;
  * @author Amir
  */
 
-//TODO Add better spawning mechanics 
+// TODO: Add better spawning mechanics
 public class WaveSpawner {
     private int wave;
     private int immigrantsLeft = 25;
@@ -19,8 +15,9 @@ public class WaveSpawner {
     private ArrayList immigrants = new ArrayList();
     private float timeLeft = frequency;
     private float normalTpf = -1;
-    
+
     public WaveSpawner(int immigrants) {
+        immigrantsLeft = immigrants;
     }
     
     public void update(float tpf) {
@@ -35,7 +32,8 @@ public class WaveSpawner {
     private float getFixedTpf(float tpf) {
         float fixedTpf = tpf;
         int i = 60;
-        //wie viel mal länger ein Tick maximal dauern darf
+
+        // Wie viel mal länger ein Tick maximal dauern darf
         float maxTimeMult = 3;
 
         if (normalTpf == -1) {
@@ -44,7 +42,7 @@ public class WaveSpawner {
 
         if (tpf > (maxTimeMult * normalTpf)) {
             fixedTpf = normalTpf;
-        }else{
+        }else {
             normalTpf = ((normalTpf * (i - 1)) + tpf) / i;
         }
         

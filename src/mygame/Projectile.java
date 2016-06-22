@@ -1,13 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package mygame;
 
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
-import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 
@@ -36,6 +31,7 @@ class Projectile extends AbstractControl {
         geom = GeometryCreator.instance.createProjectile(tower.getPosition(), type, target.getPosition());
         geom.addControl(this);
         MainGame.instance.attachToRootNode(geom);
+
         if(type == TYPE_LASER) {
             target.hit(this);
             lifetime = 100;
@@ -47,7 +43,7 @@ class Projectile extends AbstractControl {
         switch(type) {
             case TYPE_LASER:
                 if(lifetime > 0) {
-                    lifetime -= 1000*tpf;;
+                    lifetime -= 1000 * tpf;
                 } else {
                     remove();
                 }
@@ -60,7 +56,7 @@ class Projectile extends AbstractControl {
                 break;
         }
     }
-    
+
     public void moveToTarget(float tpf) {
         float fixedTpf = getFixedTpf(tpf);
         Vector3f targetPosition = target.getPosition();
@@ -68,20 +64,23 @@ class Projectile extends AbstractControl {
         direction.normalizeLocal();
         direction.multLocal(speedFactor);
         velocity.addLocal(direction);
-        //Kontrolliert geschwindigkeit damit nicht außer kontrolle bewegt wird ( macht komische Ellipsen)
+
+        // Kontrolliert geschwindigkeit damit nicht außer kontrolle bewegt wird (macht komische Ellipsen)
         velocity.multLocal(0.86f);
-        //Bewegt und KOntrolliert GEschwindikeit damit auf allen pcs gleich
+
+        // Bewegt und Kontrolliert Geschwindikeit damit auf allen pcs gleich
         spatial.move(velocity.mult(0.15f * fixedTpf));
         if (target.getPosition().distance(spatial.getLocalTranslation()) < distance) {
             hit();
         }
     }
-    //fix für die verbuggten Positionen wenn das Fenster minimiert wird
 
+    // Fix für die verbuggten Positionen wenn das Fenster minimiert wird
     private float getFixedTpf(float tpf) {
         float fixedTpf = tpf;
         int i = 60;
-        //wie viel mal länger ein Tick maximal dauern darf
+
+        // Wie viel mal länger ein Tick maximal dauern darf
         float maxTimeMult = 3;
 
         if (normalTpf == -1) {
@@ -95,21 +94,19 @@ class Projectile extends AbstractControl {
         }
         return fixedTpf;
     }
-    
+
     public void hit() {
         target.hit(this);
         remove();
     }
 
     @Override
-    protected void controlRender(RenderManager rm, ViewPort vp) {
-        
-    }
+    protected void controlRender(RenderManager rm, ViewPort vp) { }
 
     public void remove() {
         spatial.removeFromParent();
     }
-    
+
     public int getType() {
         return type;
     }

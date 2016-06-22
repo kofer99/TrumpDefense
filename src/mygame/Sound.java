@@ -1,22 +1,16 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package mygame;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioNode;
 
-
 public class Sound {
-   
-private AudioNode music; 
+
+    private AudioNode music;
     private AssetManager assetManager;
-    
+
     public Sound(AssetManager assetManager) {
         this.assetManager = assetManager;
 
- 
         loadSounds();
     }
 
@@ -26,12 +20,9 @@ private AudioNode music;
         music.setPositional(false);
         music.setReverbEnabled(false);
         music.setLooping(true);
-            
     }
+
     public void startMusic() {
         music.play();
     }
- 
-
-
 }

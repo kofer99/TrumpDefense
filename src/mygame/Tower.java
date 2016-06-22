@@ -1,10 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package mygame;
 
-import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
@@ -30,7 +25,6 @@ class Tower extends AbstractControl {
     private WaveSpawner s;
     private int projectileType;
     public int type = 0;
-    private Quaternion q;
     private IllegalImmigrant target;
 
     public Tower(int type) {
@@ -52,10 +46,7 @@ class Tower extends AbstractControl {
         geom.addControl(this);
     }
 
-    /**
-     * für die Vorschau bevor der Turm platziert wird
-     *
-     */
+    // Für die Vorschau bevor der Turm platziert wird
     public Geometry createGeometry() {
         return GeometryCreator.instance.createBox(Vector3f.ZERO);
     }
@@ -65,9 +56,9 @@ class Tower extends AbstractControl {
         if (target == null) {
             target = getNearestImmigrant();
         }
+
         if (target != null) {
             spatial.lookAt(target.getPosition(), new Vector3f(0, 0, 1));
-
 
             if (target.getPosition().distance(spatial.getLocalTranslation()) <= range) {
                 if (System.currentTimeMillis() - startTime >= cooldown) {
@@ -84,8 +75,7 @@ class Tower extends AbstractControl {
     }
 
     @Override
-    protected void controlRender(RenderManager rm, ViewPort vp) {
-    }
+    protected void controlRender(RenderManager rm, ViewPort vp) { }
 
     public IllegalImmigrant getNearestImmigrant() {
         float distance = -1.0f;

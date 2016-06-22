@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package mygame;
 
 import com.jme3.asset.AssetManager;
@@ -31,7 +27,7 @@ public class GeometryCreator {
     }
     
     public Spatial createTowerGeom(int type) {
-        Spatial geom = null;
+        Spatial geom;
         switch (type) {
             case Tower.TYPE_UNICORN:
                 geom = (Spatial) assetManager.loadModel("Models/unicornfuv2.j3o");
@@ -168,17 +164,12 @@ public class GeometryCreator {
     }
     
     public Spatial createProjectile(Vector3f position, int type, Vector3f targetPosition) {
-        // Box b = new Box(1f, 1f, 1f);
        switch(type) {
             case Projectile.TYPE_NORMAL:
                 return createSphere(position);
             case Projectile.TYPE_LASER:
                 return createRainbowLaser(position, targetPosition);
         }
-        //Spatial boxs = assetManager.loadModel("Models/laserschuss.j3o");
-        //Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        //mat.setColor("Color", ColorRGBA.Blue);
-        //boxs.setMaterial(mat);
        return null;
     }
     
@@ -201,8 +192,6 @@ public class GeometryCreator {
         mat.setColor("Color", ColorRGBA.Blue);
         sphere.setMaterial(mat);
         sphere.setLocalTranslation(contactPoint);
-        //sphere.addControl(new TestControl(cubes, fsq, mapImage, speedFactor_Ball));
-        //System.out.println("Create Sphere: " + sphere.getName() + "-" + sphere.getLocalTranslation());
         return sphere;
     }
 }

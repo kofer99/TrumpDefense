@@ -1,10 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package mygame;
 
-import com.jme3.input.InputManager;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
@@ -41,10 +36,8 @@ public class TdMap {
         if (ppfx * fieldsx != ir.getWidth() || ppfy * fieldsy != ir.getHeight()) {
             System.out.println("Die Bildgröße ist nicht durch die Felder teilbar!");
         }
-        //scanTowerFields(fieldsx, fieldsy, ppfx, ppfy, ir);
+
         scanNodes(ir);
-        //print();
-        //System.out.println(getMaxDistance());
         height = ir.getHeight();
         width = ir.getWidth();
     }
@@ -134,7 +127,6 @@ public class TdMap {
     public Vector3f[] getVectors() {
         Vector3f[] ret = new Vector3f[nodex.length];
         for (int i = 0; i < nodex.length; i++) {
-            //InputManager in = Main.instance.getInputManager();
             Vector2f temp = new Vector2f();
             temp.setX(nodex[i]);
             temp.setY(nodey[i]);
@@ -145,15 +137,15 @@ public class TdMap {
 
     public int[] getPosition(int d) {
         int[] ret = new int[2];
-        int a = d;
+
         int i = 0;
-        while (a > 0) {
-            a -= distances[i];
+        while (d > 0) {
+            d -= distances[i];
             i++;
         }
-        int basex = nodex[i];
-        int basey = nodey[i];
-        //ret[0] = basex + ;
+
+        ret[0] = nodex[i];
+        ret[1] = nodey[i];
         return ret;
     }
 
@@ -175,7 +167,6 @@ public class TdMap {
 
     public boolean towerplace(Vector3f mousePosition, Quad rat) {
         int max = 20;
-        boolean ret = true;
         float ratiox = getWidth() / rat.getWidth();
         float ratioy = getHeight() / rat.getHeight();
         int positionx = (int) (ratiox * mousePosition.getX()) + (int) (rat.getWidth() / 2 * ratiox);
@@ -185,24 +176,23 @@ public class TdMap {
         if (positionx < 0 || positiony < 0 || ((positionx + max) >= getWidth()) || (positiony + max) >= getHeight()) {
             return false;
         }
-        try {
-            for (int x = positionx; x < positionx + max; x++) {
-                for (int y = positiony; y < positiony + max; y++) {
-                    if (x <= getWidth() - 1 && y <= getHeight() - 1) {
-                        ColorRGBA c = ir.getPixel(x, getHeight() - y);
-                        int r = (int) (255 * c.getRed());
-                        int g = (int) (255 * c.getGreen());
-                        int b = (int) (255 * c.getBlue());
 
-                        if (r == 255 && g == 0 && b == 255) {
-                            ret = false;
-                        }
-                    }
+        for (int x = positionx; x < positionx + max; x++) {
+            for (int y = positiony; y < positiony + max; y++) {
+                if (x > getWidth() - 1 || y > getHeight() - 1) {
+                    continue;
+                }
+
+                ColorRGBA c = ir.getPixel(x, getHeight() - y);
+                int r = (int) (255 * c.getRed());
+                int g = (int) (255 * c.getGreen());
+                int b = (int) (255 * c.getBlue());
+
+                if (r == 255 && g == 0 && b == 255) {
+                    return false;
                 }
             }
-        } catch (Exception e) {
         }
-        return ret;
-
+        return true;
     }
 }
