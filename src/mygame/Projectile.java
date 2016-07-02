@@ -23,38 +23,63 @@ class Projectile extends AbstractControl {
     private float lifetime = 0;
     private int type = -1;
     private float normalTpf = -1;
+    private boolean exists = true;
+    private Tower tower;
+    private Spatial geom2;
 
     public Projectile(IllegalImmigrant target, Tower tower, int type) {
         this.type = type;
-        target.setTargeted(true);
         this.target = target;
         geom = GeometryCreator.instance.createProjectile(tower.getPosition(), type, target.getPosition());
         geom.addControl(this);
         MainGame.instance.attachToRootNode(geom);
-
-        if(type == TYPE_LASER) {
-            target.hit(this);
-            lifetime = 100;
-        }
+        this.tower = tower;
     }
 
     @Override
     protected void controlUpdate(float tpf) {
-        switch(type) {
-            case TYPE_LASER:
-                if(lifetime > 0) {
-                    lifetime -= 1000 * tpf;
-                } else {
-                    remove();
+        if(exists) {
+            if(!tower.isInRange(this, target)) {
+                switch(type) {
+                    case TYPE_LASER:
+                        remove();
+                        break;
+                    default:
+                        break;
                 }
+            }
+                
+            switch (type) {
+                case TYPE_LASER:
+                    hit(tpf);
+                    if (geom2 != null) {
+                        geom2.removeFromParent();
+                    }
+                    if (exists) {
+                        geom2 = GeometryCreator.instance.createRainbowLaser(spatial.getLocalTranslation(), target.getPosition());
+                        MainGame.instance.attachToRootNode(geom2);
+                    }
+                    break;
+                case TYPE_NORMAL:
+                    moveToTarget(tpf);
+                    break;
+                case TYPE_TASER:
+                    moveToTarget(tpf);
+                    break;
+            }
+        } 
+    }
+    
+    public void hit(float fixedTpf) {
+        switch (type) {
+            case TYPE_LASER:
+                target.hit(this, 100f * fixedTpf);
                 break;
-            case TYPE_NORMAL:
-                moveToTarget(tpf);
-                break;
-            case TYPE_TASER:
-                moveToTarget(tpf);
+            default:
+                target.hit(this, 50f);
                 break;
         }
+
     }
 
     public void moveToTarget(float tpf) {
@@ -71,7 +96,7 @@ class Projectile extends AbstractControl {
         // Bewegt und Kontrolliert Geschwindikeit damit auf allen pcs gleich
         spatial.move(velocity.mult(0.15f * fixedTpf));
         if (target.getPosition().distance(spatial.getLocalTranslation()) < distance) {
-            hit();
+            hit(fixedTpf);
         }
     }
 
@@ -95,16 +120,18 @@ class Projectile extends AbstractControl {
         return fixedTpf;
     }
 
-    public void hit() {
-        target.hit(this);
-        remove();
-    }
 
     @Override
     protected void controlRender(RenderManager rm, ViewPort vp) { }
 
     public void remove() {
+        exists = false;
+        if (geom2 != null) {
+            geom2.removeFromParent();
+        }
         spatial.removeFromParent();
+        geom2 = null;
+        tower.removeProjectile();
     }
 
     public int getType() {

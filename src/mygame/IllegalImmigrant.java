@@ -13,7 +13,6 @@ import com.jme3.scene.shape.Quad;
  */
 public class IllegalImmigrant extends AbstractControl {
 
-    public boolean targeted = false;
     private Geometry geom;
     private int[] xn;
     private int[] yn;
@@ -29,6 +28,8 @@ public class IllegalImmigrant extends AbstractControl {
     private float taserTicks = 0.0f;
     private float normalTpf = -1;
     public Vector3f sphereDirection;
+    private float health = 100.0f;
+    private boolean living = true;
 
     public IllegalImmigrant(WaveSpawner w) {
         m = MainGame.instance.getTdMap();
@@ -76,7 +77,6 @@ public class IllegalImmigrant extends AbstractControl {
             taserTicks -= tpf;
             if (taserTicks < 0.0f) {
                 taserTicks = 0.0f;
-                targeted = false;
             }
         }
 
@@ -115,13 +115,36 @@ public class IllegalImmigrant extends AbstractControl {
                 break;
             case Projectile.TYPE_TASER:
                 taserTicks = 2.0f;
-                targeted = false;
                 break;
         }
     }
 
     public Vector3f getPosition() {
         return spatial.getLocalTranslation();
+    }
+    
+    public void hit(Projectile p, float dmg) {
+        if(dmg != -1) {
+            health -= dmg;
+        }
+        switch (p.getType()) {
+            case Projectile.TYPE_LASER:
+                if(health <= 0) {
+                    remove();
+                    p.remove();
+                }
+                break;
+            case Projectile.TYPE_NORMAL:
+                if(health <= 0) {
+                    remove();
+                }
+                p.remove();
+                break;
+            case Projectile.TYPE_TASER:
+                taserTicks = 2.0f;
+                p.remove();
+                break;
+        }
     }
 
     public Vector3f getSpheredirection() {
@@ -131,17 +154,15 @@ public class IllegalImmigrant extends AbstractControl {
     public void remove() {
         spatial.removeFromParent();
         w.remove(this);
+        living = false;
     }
 
-    public boolean isTargeted() {
-        return targeted;
-    }
-
-    public void setTargeted(boolean targeted) {
-        this.targeted = targeted;
-    }
 
     public float getTaserTicks() {
         return taserTicks;
+    }
+    
+    public boolean isLiving() {
+        return living;
     }
 }
