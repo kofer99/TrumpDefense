@@ -53,6 +53,7 @@ public class MainGame extends AbstractAppState {
     private Node cubes;
     private BitmapText healthbar;
     public static MainGame instance;
+    public DataControl DataControl;
     private Geometry backgroundGeom;
     private Quad fsq;
     private Image mapImage;
@@ -125,6 +126,13 @@ public class MainGame extends AbstractAppState {
 
         rootNode.addLight(al);
         hud = new HUD(this, assetManager, inputManager, audioRenderer, guiViewPort);
+
+        DataControl = new DataControl();
+
+        // Only for debugging, can be removed later
+        DataHelper helper = new DataHelper(DataControl);
+        helper.SelectTuerme();
+        helper.SelectGegner();
 
         sound = new Sound(assetManager);
         sound.startMusic();
@@ -297,6 +305,7 @@ public class MainGame extends AbstractAppState {
     public void cleanup() {
         super.cleanup();
         rootNode.detachAllChildren();
+        DataControl.Close();
         // TODO: clean up what you initialized in the initialize method,
         // e.g. remove all spatials from rootNode
         // this is called on the OpenGL thread after the AppState has been detached

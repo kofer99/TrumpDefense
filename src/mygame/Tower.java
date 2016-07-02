@@ -32,9 +32,24 @@ class Tower extends AbstractControl {
     private float normalTpf = -1;
     private float maxAngle = 0.05f;
     private Projectile p;
+    public String Beschreibung;
+    private int damage;
 
     public Tower(int type) {
         this.type = type;
+
+        try {
+            java.sql.ResultSet res = MainGame.instance.DataControl.SelectTurm(typName(type));
+            res.next();
+            Beschreibung = res.getString(2);
+            range = (float) res.getInt(3);
+            cooldown = res.getInt(4);
+            damage = res.getInt(5);
+            res.close();
+        } catch (Throwable e) {
+            System.out.println(" . . . exception thrown:");
+            e.printStackTrace(System.out);
+        }
 
         projectileType = type == TYPE_UNICORN ? Projectile.TYPE_LASER : Projectile.TYPE_NORMAL;
     }
@@ -199,5 +214,28 @@ class Tower extends AbstractControl {
             return true;
         }
         return false;
+    }
+
+    String typName(int type)
+    {
+        String name = "";
+        switch (type)
+        {
+            case (TYPE_POLICE):
+                name = "Polizeistation";
+                break;
+            case (TYPE_UNICORN):
+                name = "Einhornturm";
+                break;
+            case (TYPE_MURICA):
+                name = "Einhornturm";
+                break;
+            case (TYPE_MARINE):
+                name = "Marines";
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid type for tower name " + type);
+        }
+        return name;
     }
 }
