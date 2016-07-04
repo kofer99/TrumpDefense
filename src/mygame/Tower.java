@@ -52,6 +52,8 @@ class Tower extends AbstractControl {
         }
 
         projectileType = type == TYPE_UNICORN ? Projectile.TYPE_LASER : Projectile.TYPE_NORMAL;
+        if (type == TYPE_POLICE)
+            projectileType = Projectile.TYPE_TASER;
     }
 
     public void init(Vector3f position) {
@@ -70,7 +72,7 @@ class Tower extends AbstractControl {
     @Override
     protected void controlUpdate(float tpf) {
         float fixedTpf = getFixedTpf(tpf);
-        cooldownTimeLeft -= fixedTpf;
+        cooldownTimeLeft -= fixedTpf * 1000;
         if(updateTarget() == false) return;
         
         switch (type) {
