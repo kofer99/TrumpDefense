@@ -176,12 +176,12 @@ public class GeometryCreator {
     
     public Spatial createProjectile(Vector3f position, int type, Vector3f targetPosition) {
        switch(type) {
-            case Projectile.TYPE_NORMAL:
-                return createSphere(position);
             case Projectile.TYPE_LASER:
                 return createSmallBox(position);
+            case Projectile.TYPE_NORMAL:
+            default:
+                return createSphere(position);
         }
-       return null;
     }
     
     public Geometry createBox(Vector3f as) {
