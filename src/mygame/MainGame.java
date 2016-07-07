@@ -36,7 +36,7 @@ import com.jme3.texture.Texture;
 
 /**
  *
- * @author Daniel
+ * @author Daniel, Lukas
  */
 public class MainGame extends AbstractAppState {
     private SimpleApplication app;
@@ -136,8 +136,7 @@ sound = new Sound(assetManager);
         helper.SelectTuerme();
         helper.SelectGegner();
 
-
-spawner = new WaveSpawner(2000);
+        spawner = new WaveSpawner(this);
         geometryCreator = new GeometryCreator();
         setEnabled(true);
         // TODO: initialize your AppState, e.g. attach spatials to rootNode
@@ -163,21 +162,15 @@ spawner = new WaveSpawner(2000);
     
     @Override
     public void setEnabled(boolean enabled){
-    super.setEnabled(enabled);
-    if(enabled){                
-        sound.startMusic();
-        spawner.setEnabled(true);
-        
-         hud.nifty.fromXml("Interface/IngameUI.xml", "start", this.hud);
-    
-    }else{
-        sound.stopMusic();
-        spawner.setEnabled(false);
-        hud.nifty.fromXml("Interface/IngameUI.xml", "pause", this.hud);
-       // PauseScreen.instance.setEnabled(true);
-        
-    }
-        
+        super.setEnabled(enabled);
+        if (enabled) {
+            sound.startMusic();
+            spawner.setEnabled(true);
+        } else {
+            sound.stopMusic();
+            spawner.setEnabled(false);
+            // PauseScreen.instance.setEnabled(true);
+        }
     }
 
     private void initCursor(Geometry g) {
@@ -341,6 +334,10 @@ spawner = new WaveSpawner(2000);
     }
 
     void reduceHealth(int i) {
-     Health--;
+        Health--;
+    }
+
+    void NeueWelle(int welle) {
+        hud.setzeWelle(welle);
     }
 }
