@@ -9,30 +9,45 @@ import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import com.jme3.niftygui.NiftyJmeDisplay;
+import de.lessvoid.nifty.elements.Element;
+import de.lessvoid.nifty.elements.render.TextRenderer;
 
 /**
  *
- * @author Amir, Lukas
+ * @author Amir, Lukas, Daniel
  */
 public class HUD extends AbstractAppState implements ScreenController {
     public int CurrentTower = -1;
-public static HUD instance;
+
+    Element Welle;
+    Nifty nifty;
     NiftyJmeDisplay niftyDisplay;
-   public Nifty nifty;
     MainGame main;
 
     public HUD(MainGame main, final AssetManager assetManager, final InputManager inputManager, final AudioRenderer audioRenderer, final ViewPort guiViewPort) {
         this.main = main;
-        instance = this;
         niftyDisplay = new NiftyJmeDisplay(assetManager, inputManager, audioRenderer, guiViewPort);
         guiViewPort.addProcessor(niftyDisplay);
         nifty = niftyDisplay.getNifty();
-        nifty.fromXml("Interface/IngameUI.xml", "start", this);
+
+        nifty.fromXml("Interface/IngameUI.xml", "sidebar", this);
     }
 
-    public void bind(Nifty nifty, Screen screen) { }
+    public void bind(Nifty nifty, Screen screen) {
+        if (!screen.getScreenId().equals("sidebar"))
+            return;
+
+        Welle = screen.getRootElement().findElementByName("layer")
+                .findElementByName("ingameStats")
+                .findElementByName("Welle");
+    }
+
     public void onStartScreen() { }
     public void onEndScreen() { }
+
+    public void setzeWelle(int welle) {
+        Welle.getRenderer(TextRenderer.class).setText("Welle: " + welle);
+    }
 
     public void placeTower(String type) {
         CurrentTower = -1;
@@ -69,9 +84,9 @@ public static HUD instance;
     }
 
     public void pause() {
-             Main.instance.isRunning = false;
-        Main.instance.triggered=true;
-        
+        Main.instance.isRunning = false;
+        Main.instance.triggered = true;
+        nifty.fromXml("Interface/IngameUI.xml", "pause", this);
     }
 
     public void nextWave() {
@@ -81,13 +96,10 @@ public static HUD instance;
     public void openSkilltree() {
         
     }
-        public void resume(){
-          
-        
+
+    public void resume() {
         Main.instance.isRunning = true;
-        Main.instance.triggered=true;
-        //this.setEnabled(false);
-        
-    
+        Main.instance.triggered = true;
+        nifty.fromXml("Interface/IngameUI.xml", "sidebar", this);
     }
 }
