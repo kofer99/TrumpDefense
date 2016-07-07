@@ -76,6 +76,7 @@ public class MainGame extends AbstractAppState {
     private BitmapFont guiFont;
     private AudioRenderer audioRenderer;
     private ViewPort guiViewPort;
+    private Main main;
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -90,10 +91,11 @@ public class MainGame extends AbstractAppState {
         this.guiFont = new BitmapFont();
         this.audioRenderer = this.app.getAudioRenderer();
         this.guiViewPort = this.app.getGuiViewPort();
+        main = Main.instance;
         instance = this;
         mapImage = assetManager.loadTexture("Textures/map1fields.png").getImage();
         map = new TdMap(mapImage, 15, 10);
-
+sound = new Sound(assetManager);
         flyCam.setEnabled(false);
         inputManager.setCursorVisible(true);
 
@@ -106,7 +108,7 @@ public class MainGame extends AbstractAppState {
         shootables.attachChild(spheres);
         shootables.attachChild(cubes);
         rootNode.attachChild(shootables);
-        spawner = new WaveSpawner(2000);
+        
         Health = 10;
             
         // healthbar = new BitmapText(guiFont);
@@ -134,10 +136,10 @@ public class MainGame extends AbstractAppState {
         helper.SelectTuerme();
         helper.SelectGegner();
 
-        sound = new Sound(assetManager);
-        sound.startMusic();
 
+spawner = new WaveSpawner(2000);
         geometryCreator = new GeometryCreator();
+        setEnabled(true);
         // TODO: initialize your AppState, e.g. attach spatials to rootNode
         // this is called on the OpenGL thread after the AppState has been attached
     }
@@ -145,7 +147,7 @@ public class MainGame extends AbstractAppState {
     @Override
     public void update(float tpf) {
         if (Health <= 0) {
-            Main.instance.closeAppState(this);
+           this.setEnabled(false);
            //this.stop();
         }
         // TODO: implement behavior during runtime
@@ -157,6 +159,25 @@ public class MainGame extends AbstractAppState {
 
     private void towerPreview(Tower t) {
         initCursor(t.createGeometry());
+    }
+    
+    @Override
+    public void setEnabled(boolean enabled){
+    super.setEnabled(enabled);
+    if(enabled){                
+        sound.startMusic();
+        spawner.setEnabled(true);
+        
+         hud.nifty.fromXml("Interface/IngameUI.xml", "start", this.hud);
+    
+    }else{
+        sound.stopMusic();
+        spawner.setEnabled(false);
+        hud.nifty.fromXml("Interface/IngameUI.xml", "pause", this.hud);
+       // PauseScreen.instance.setEnabled(true);
+        
+    }
+        
     }
 
     private void initCursor(Geometry g) {

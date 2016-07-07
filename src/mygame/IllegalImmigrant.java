@@ -50,6 +50,7 @@ public class IllegalImmigrant extends AbstractControl {
 
     @Override
     protected void controlUpdate(float tpf) {
+        if(MainGame.instance.isEnabled()){
         float fixedTpf = getFixedTpf(tpf);
         if (taserTicks == 0.0f) {
             if (counter < nrCheckpoints) {
@@ -79,7 +80,7 @@ public class IllegalImmigrant extends AbstractControl {
                 taserTicks = 0.0f;
             }
         }
-
+        }
     }
 
     // Fix für die verbuggten Positionen wenn das Fenster minimiert wird

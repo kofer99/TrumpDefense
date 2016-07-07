@@ -10,6 +10,8 @@ import com.jme3.renderer.RenderManager;
  */
 public class Main extends SimpleApplication {
 
+    public boolean isRunning = true;
+    public boolean triggered = false;
     public static void main(String[] args) {
         Main app = new Main();
         app.start();
@@ -33,9 +35,11 @@ public class Main extends SimpleApplication {
     }
     @Override
     public void simpleUpdate(float tpf) {
-        if(stateManager.hasState(MainGame.instance)==false){
-            this.stop();
-        }
+      if(triggered){
+          MainGame.instance.setEnabled(isRunning);
+          triggered=false;
+      }
+ 
        
     }
 

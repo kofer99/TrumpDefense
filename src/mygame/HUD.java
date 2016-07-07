@@ -16,13 +16,14 @@ import com.jme3.niftygui.NiftyJmeDisplay;
  */
 public class HUD extends AbstractAppState implements ScreenController {
     public int CurrentTower = -1;
-
+public static HUD instance;
     NiftyJmeDisplay niftyDisplay;
-    Nifty nifty;
+   public Nifty nifty;
     MainGame main;
 
     public HUD(MainGame main, final AssetManager assetManager, final InputManager inputManager, final AudioRenderer audioRenderer, final ViewPort guiViewPort) {
         this.main = main;
+        instance = this;
         niftyDisplay = new NiftyJmeDisplay(assetManager, inputManager, audioRenderer, guiViewPort);
         guiViewPort.addProcessor(niftyDisplay);
         nifty = niftyDisplay.getNifty();
@@ -68,6 +69,8 @@ public class HUD extends AbstractAppState implements ScreenController {
     }
 
     public void pause() {
+             Main.instance.isRunning = false;
+        Main.instance.triggered=true;
         
     }
 
@@ -77,5 +80,14 @@ public class HUD extends AbstractAppState implements ScreenController {
 
     public void openSkilltree() {
         
+    }
+        public void resume(){
+          
+        
+        Main.instance.isRunning = true;
+        Main.instance.triggered=true;
+        //this.setEnabled(false);
+        
+    
     }
 }

@@ -25,4 +25,8 @@ public class Sound {
     public void startMusic() {
         music.play();
     }
+    public void stopMusic(){
+    music.stop();
+    
+    }
 }

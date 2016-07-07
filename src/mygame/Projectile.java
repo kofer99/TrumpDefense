@@ -38,6 +38,7 @@ class Projectile extends AbstractControl {
 
     @Override
     protected void controlUpdate(float tpf) {
+        if(MainGame.instance.isEnabled()){
         if(exists) {
             if(!tower.isInRange(this, target)) {
                 switch(type) {
@@ -68,7 +69,7 @@ class Projectile extends AbstractControl {
                     break;
             }
         } 
-    }
+    }}
     
     public void hit(float fixedTpf) {
         switch (type) {

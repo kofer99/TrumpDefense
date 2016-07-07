@@ -15,20 +15,25 @@ public class WaveSpawner {
     private ArrayList immigrants = new ArrayList();
     private float timeLeft = frequency;
     private float normalTpf = -1;
+    private boolean enabled=true;
 
     public WaveSpawner(int immigrants) {
         immigrantsLeft = immigrants;
+        
     }
     
     public void update(float tpf) {
+        if(enabled){
         float fixedTpf = getFixedTpf(tpf);
         timeLeft -= fixedTpf;
         if(timeLeft <= 0) {
             timeLeft = frequency;
             immigrants.add(new IllegalImmigrant(this));
-        }
+        }}
     }
-    
+    public void setEnabled(boolean enab){
+    enabled = enab;
+    }
     private float getFixedTpf(float tpf) {
         float fixedTpf = tpf;
         int i = 60;

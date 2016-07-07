@@ -34,6 +34,7 @@ class Tower extends AbstractControl {
     private Projectile p;
     public String Beschreibung;
     private int damage;
+    public boolean enabled = true;
 
     public Tower(int type) {
         this.type = type;
@@ -56,6 +57,8 @@ class Tower extends AbstractControl {
             projectileType = Projectile.TYPE_TASER;
     }
 
+    
+    
     public void init(Vector3f position) {
         geom = GeometryCreator.instance.createTowerGeom(type);
         geom.setLocalTranslation(position);
@@ -71,6 +74,7 @@ class Tower extends AbstractControl {
 
     @Override
     protected void controlUpdate(float tpf) {
+        if(MainGame.instance.isEnabled()){
         float fixedTpf = getFixedTpf(tpf);
         cooldownTimeLeft -= fixedTpf * 1000;
         if(updateTarget() == false) return;
@@ -88,7 +92,7 @@ class Tower extends AbstractControl {
                             shoot();
                         }
                         break;
-                }
+        } }
     }
     
     private void shoot() {
