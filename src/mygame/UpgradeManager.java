@@ -29,6 +29,8 @@ public class UpgradeManager {
             case TYPE_FLAG:
                 RangeModifier *= 1.2f;
                 break;
+            default:
+                throw new IllegalArgumentException("Invalid type for upgrade: '" + upgrade + "'");
         }
     }
 }
