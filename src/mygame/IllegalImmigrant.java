@@ -112,6 +112,8 @@ public class IllegalImmigrant extends AbstractControl {
             case Projectile.TYPE_LASER:
                 if(health <= 0) {
                     remove();
+                    MainGame.instance.money=MainGame.instance.money+50;
+                    MainGame.instance.setMoney(MainGame.instance.money+50);
                     p.remove();
                 }
                 break;

@@ -39,10 +39,10 @@ import com.jme3.texture.Texture;
  * @author Daniel, Lukas
  */
 public class MainGame extends AbstractAppState {
+
     private SimpleApplication app;
     private Node rootNode;
     private AssetManager assetManager;
-
     Sound sound;
     private int Health;
     protected Geometry player;
@@ -77,15 +77,16 @@ public class MainGame extends AbstractAppState {
     private AudioRenderer audioRenderer;
     private ViewPort guiViewPort;
     private Main main;
+    public int money = 1000;
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
-        this.app = (SimpleApplication)app;
-        this.rootNode= this.app.getRootNode();
-        this.assetManager =this.app.getAssetManager();
+        this.app = (SimpleApplication) app;
+        this.rootNode = this.app.getRootNode();
+        this.assetManager = this.app.getAssetManager();
         this.inputManager = this.app.getInputManager();
-        this.flyCam = this.app.getFlyByCamera(); 
+        this.flyCam = this.app.getFlyByCamera();
         this.cam = cam = this.app.getCamera();
         this.guiNode = this.app.getGuiNode();
         this.guiFont = new BitmapFont();
@@ -95,7 +96,7 @@ public class MainGame extends AbstractAppState {
         instance = this;
         mapImage = assetManager.loadTexture("Textures/map1fields.png").getImage();
         map = new TdMap(mapImage, 15, 10);
-sound = new Sound(assetManager);
+        sound = new Sound(assetManager);
         flyCam.setEnabled(false);
         inputManager.setCursorVisible(true);
 
@@ -108,9 +109,9 @@ sound = new Sound(assetManager);
         shootables.attachChild(spheres);
         shootables.attachChild(cubes);
         rootNode.attachChild(shootables);
-        
+
         Health = 10;
-            
+
         // healthbar = new BitmapText(guiFont);
         // healthbar.setText(""+Health);
         // guiNode.attachChild(healthbar);
@@ -146,8 +147,8 @@ sound = new Sound(assetManager);
     @Override
     public void update(float tpf) {
         if (Health <= 0) {
-           this.setEnabled(false);
-           //this.stop();
+            this.setEnabled(false);
+            //this.stop();
         }
         // TODO: implement behavior during runtime
         if (showCursor) {
@@ -159,9 +160,9 @@ sound = new Sound(assetManager);
     private void towerPreview(Tower t) {
         initCursor(t.createGeometry());
     }
-    
+
     @Override
-    public void setEnabled(boolean enabled){
+    public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
         if (enabled) {
             sound.startMusic();
@@ -260,11 +261,15 @@ sound = new Sound(assetManager);
                 flyCam.setRotationSpeed(5);
             } else if (name.equals("left") && keyPressed) {
                 if (hud.CurrentTower != -1) {
-                    Vector3f position = getMousePosition();
-                    if (map.towerplace(position, fsq) == true) {
-                        preview.init(position);
-                        destroyCursor();
-                        hud.CurrentTower = -1;
+                    if (money >= 250) {
+                        Vector3f position = getMousePosition();
+                        if (map.towerplace(position, fsq) == true) {
+                            preview.init(position);
+                            money = money - 250;
+                            setMoney(money);
+                            destroyCursor();
+                            hud.CurrentTower = -1;
+                        }
                     }
                 }
             } else if (name.equals("right") && keyPressed) {
@@ -311,7 +316,7 @@ sound = new Sound(assetManager);
         rootNode.detachChild(s);
     }
 
-    public void reduceHealth(){
+    public void reduceHealth() {
         Health--;
     }
 
@@ -339,6 +344,9 @@ sound = new Sound(assetManager);
 
     public void NeueWelle(int welle) {
         hud.setzeWelle(welle);
+    }
+    public void setMoney(int money){
+    hud.setMoney(money);
     }
 
     public void SkipWave() {
