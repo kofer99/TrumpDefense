@@ -103,7 +103,7 @@ class Tower extends AbstractControl {
         }
 
         // Versuche nicht jemanden auserhalb der Reichweite zu erwischen
-        if (target != null && (!IsInRange(target, true) || !target.isLiving())) {
+        if (target != null && (!IsInRange(target) || !target.isLiving())) {
             target = getNearestImmigrant();
         }
 
@@ -120,17 +120,17 @@ class Tower extends AbstractControl {
             IllegalImmigrant i = (IllegalImmigrant) o;
             switch (type) {
                 case TYPE_MARINE:
-                    if (IsInRange(i, false)) {
+                    if (IsInRange(i)) {
                         nearest = i;
                     }
                     break;
                 case TYPE_POLICE:
-                    if (IsInRange(i, true) && i.getTaserTicks() == 0) {
+                    if (IsInRange(i) && i.getTaserTicks() == 0) {
                         nearest = i;
                     }
                     break;
                 case TYPE_UNICORN:
-                    if (IsInRange(i, false)) {
+                    if (IsInRange(i)) {
                         nearest = i;
                     }
                     break;
@@ -139,7 +139,7 @@ class Tower extends AbstractControl {
         return nearest;
     }
 
-    public boolean IsInRange(IllegalImmigrant targeted, boolean ignoreTargeted) {
+    public boolean IsInRange(IllegalImmigrant targeted) {
         float modifiedRange = range * MainGame.instance.Upgrades.RangeModifier;
         return range == -1 || getPosition().distance(targeted.getPosition()) < modifiedRange;
     }
