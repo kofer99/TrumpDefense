@@ -21,11 +21,10 @@ public class WaveSpawner {
 
     public WaveSpawner(MainGame main) {
         this.main = main;
-        newWave();
     }
 
     public void update(float tpf) {
-        if (!Enabled)
+        if (!Enabled || immigrantsSpawned == null)
             return;
 
         for (int i = 0; i < immigrantsSpawned.size(); i++) {
