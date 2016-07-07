@@ -38,7 +38,7 @@ class Projectile extends AbstractControl {
         if (!MainGame.instance.isEnabled())
             return;
 
-        if(!tower.isInRange(this, target) && type == TYPE_LASER)
+        if(!tower.isInRange(this, target))
         {
             remove();
             return;
