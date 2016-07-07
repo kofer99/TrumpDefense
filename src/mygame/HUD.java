@@ -22,6 +22,7 @@ public class HUD extends AbstractAppState implements ScreenController {
     Element Welle;
     Element Money;
     Element GameOver;
+    Element Leben;
     Nifty nifty;
     NiftyJmeDisplay niftyDisplay;
     MainGame main;
@@ -48,6 +49,8 @@ public class HUD extends AbstractAppState implements ScreenController {
         GameOver = screen.getRootElement().findElementByName("layer")
                 .findElementByName("GameOver");
         GameOver.setVisible(false);
+        Leben = screen.getRootElement().findElementByName("layer")
+                .findElementByName("Leben");
     }
 
     public void onStartScreen() { }
@@ -59,6 +62,10 @@ public class HUD extends AbstractAppState implements ScreenController {
 
     public void setzeWelle(int welle) {
         Welle.getRenderer(TextRenderer.class).setText("Welle: " + welle);
+    }
+
+    public void setzeLeben(int leben) {
+        Leben.getRenderer(TextRenderer.class).setText("Leben: " + leben);
     }
 
     public void GameOver() {

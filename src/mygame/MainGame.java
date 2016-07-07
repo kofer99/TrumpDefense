@@ -133,10 +133,6 @@ public class MainGame extends AbstractAppState {
 
     @Override
     public void update(float tpf) {
-        if (Health <= 0) {
-            GameOver();
-            //this.stop();
-        }
         // TODO: implement behavior during runtime
         if (showCursor) {
             updateCursor();
@@ -300,6 +296,10 @@ public class MainGame extends AbstractAppState {
 
     public void reduceHealth() {
         Health--;
+        hud.setzeLeben(Health);
+
+        if (Health <= 0)
+            GameOver();
     }
 
     @Override
