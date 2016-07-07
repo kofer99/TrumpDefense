@@ -40,7 +40,7 @@ class Projectile extends AbstractControl {
         if (!MainGame.instance.isEnabled())
             return;
 
-        if(!tower.isInRange(this, target))
+        if(!tower.IsInRange(target))
         {
             remove();
             return;

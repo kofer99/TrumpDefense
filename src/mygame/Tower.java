@@ -189,13 +189,6 @@ class Tower extends AbstractControl {
     public void removeProjectile() {
         p = null;
     }
-    
-    public boolean isInRange(Projectile projectile, IllegalImmigrant target) {
-        if (spatial.getLocalTranslation().distance(target.getPosition()) < range) {
-            return true;
-        }
-        return false;
-    }
 
     String typName(int type)
     {
