@@ -84,7 +84,7 @@ class Projectile extends AbstractControl {
     }
 
     public void moveToTarget(float tpf) {
-        float fixedTpf = getFixedTpf(tpf);
+        float fixedTpf = MainGame.instance.GetFixedTpf(tpf);
         Vector3f targetPosition = target.getPosition();
         Vector3f direction = targetPosition.subtract(spatial.getLocalTranslation());
         direction.normalizeLocal();
@@ -100,27 +100,6 @@ class Projectile extends AbstractControl {
             hit(fixedTpf);
         }
     }
-
-    // Fix für die verbuggten Positionen wenn das Fenster minimiert wird
-    private float getFixedTpf(float tpf) {
-        float fixedTpf = tpf;
-        int i = 60;
-
-        // Wie viel mal länger ein Tick maximal dauern darf
-        float maxTimeMult = 3;
-
-        if (normalTpf == -1) {
-            normalTpf = tpf;
-        }
-
-        if (tpf > (maxTimeMult * normalTpf)) {
-            fixedTpf = normalTpf;
-        } else {
-            normalTpf = ((normalTpf * (i - 1)) + tpf) / i;
-        }
-        return fixedTpf;
-    }
-
 
     @Override
     protected void controlRender(RenderManager rm, ViewPort vp) { }

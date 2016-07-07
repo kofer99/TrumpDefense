@@ -51,7 +51,7 @@ public class IllegalImmigrant extends AbstractControl {
     @Override
     protected void controlUpdate(float tpf) {
         if(MainGame.instance.isEnabled()){
-        float fixedTpf = getFixedTpf(tpf);
+        float fixedTpf = MainGame.instance.GetFixedTpf(tpf);
         if (taserTicks == 0.0f) {
             if (counter < nrCheckpoints) {
                 Vector3f checkPointPosition = new Vector3f(-(bgObject.getWidth() / 2) + xn[counter] * ratioxr, -(bgObject.getHeight() / 2) + yn[counter] * ratioyr, spatial.getLocalTranslation().getZ());
@@ -81,26 +81,6 @@ public class IllegalImmigrant extends AbstractControl {
             }
         }
         }
-    }
-
-    // Fix für die verbuggten Positionen wenn das Fenster minimiert wird
-    private float getFixedTpf(float tpf) {
-        float fixedTpf = tpf;
-        int i = 60;
-
-        // Wie viel mal länger ein Tick maximal dauern darf
-        float maxTimeMult = 3;
-
-        if (normalTpf == -1) {
-            normalTpf = tpf;
-        }
-
-        if (tpf > (maxTimeMult * normalTpf)) {
-            fixedTpf = normalTpf;
-        } else {
-            normalTpf = ((normalTpf * (i - 1)) + tpf) / i;
-        }
-        return fixedTpf;
     }
 
     @Override

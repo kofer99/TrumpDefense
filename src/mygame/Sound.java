@@ -15,8 +15,7 @@ public class Sound {
     }
 
     private void loadSounds() {
-            
-        music = new AudioNode(assetManager,"Sounds/Music.ogg");
+        music = new AudioNode(assetManager, "Sounds/Music.ogg");
         music.setPositional(false);
         music.setReverbEnabled(false);
         music.setLooping(true);
@@ -25,8 +24,8 @@ public class Sound {
     public void startMusic() {
         music.play();
     }
+
     public void stopMusic(){
-    music.stop();
-    
+        music.stop();
     }
 }

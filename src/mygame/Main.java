@@ -17,33 +17,30 @@ public class Main extends SimpleApplication {
         app.start();
     }
 
-
     public static Main instance;
 
     @Override
     public void simpleInitApp() {
         instance = this;
 
-        
         stateManager.attach(new MainGame());
     }
-    public void closeAppState(AbstractAppState a){
+
+    public void closeAppState(AbstractAppState a) {
         stateManager.detach(a);
     }
-       public void openAppState(AbstractAppState a){
+
+    public void openAppState(AbstractAppState a) {
         stateManager.attach(a);
     }
+
     @Override
     public void simpleUpdate(float tpf) {
-      if(triggered){
-          MainGame.instance.setEnabled(isRunning);
-          triggered=false;
-      }
- 
-       
+        if (triggered) {
+            MainGame.instance.setEnabled(isRunning);
+            triggered = false;
+        }
     }
-
-    
 
     @Override
     public void simpleRender(RenderManager rm) { }

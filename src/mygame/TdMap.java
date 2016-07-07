@@ -85,12 +85,12 @@ public class TdMap {
                 }
             }
         }
+
         nodex = new int[n];
         nodey = new int[n];
         for (int i = 0; i < n; i++) {
             nodex[i] = nodesx[i];
             nodey[i] = nodesy[i];
-
         }
         return n;
     }

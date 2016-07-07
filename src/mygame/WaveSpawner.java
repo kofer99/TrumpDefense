@@ -16,7 +16,6 @@ public class WaveSpawner {
     float frequency = 0.6f;
     ArrayList immigrants = new ArrayList();
     ArrayList<Float> timeLeft;
-    float normalTpf = -1;
     MainGame main;
 
     public WaveSpawner(MainGame main) {
@@ -37,7 +36,7 @@ public class WaveSpawner {
             }
 
             float cooldown = timeLeft.get(i);
-            cooldown -= getFixedTpf(tpf);
+            cooldown -= main.GetFixedTpf(tpf);
             if (cooldown <= 0) {
                 cooldown = frequency;
                 immigrantsSpawned.set(i, ++immigrantNumber);
@@ -65,26 +64,6 @@ public class WaveSpawner {
 
     public void setEnabled(boolean enab) {
         Enabled = enab;
-    }
-
-    float getFixedTpf(float tpf) {
-        float fixedTpf = tpf;
-        int i = 60;
-
-        // Wie viel mal länger ein Tick maximal dauern darf
-        float maxTimeMult = 3;
-
-        if (normalTpf == -1) {
-            normalTpf = tpf;
-        }
-
-        if (tpf > (maxTimeMult * normalTpf)) {
-            fixedTpf = normalTpf;
-        } else {
-            normalTpf = ((normalTpf * (i - 1)) + tpf) / i;
-        }
-
-        return fixedTpf;
     }
 
     public void remove(IllegalImmigrant i) {

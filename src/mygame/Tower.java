@@ -75,7 +75,7 @@ class Tower extends AbstractControl {
     @Override
     protected void controlUpdate(float tpf) {
         if(MainGame.instance.isEnabled()){
-        float fixedTpf = getFixedTpf(tpf);
+        float fixedTpf = MainGame.instance.GetFixedTpf(tpf);
         cooldownTimeLeft -= fixedTpf * 1000;
         if(updateTarget() == false) return;
         
@@ -115,25 +115,6 @@ class Tower extends AbstractControl {
             return false;
         }
         return true;
-    }
-    
-    //fix für die verbuggten Positionen wenn das Fenster minimiert wird
-    private float getFixedTpf(float tpf) {
-        float fixedTpf = tpf;
-        int i = 60;
-        //wie viel mal länger ein Tick maximal dauern darf
-        float maxTimeMult = 3;
-
-        if (normalTpf == -1) {
-            normalTpf = tpf;
-        }
-
-        if (tpf > (maxTimeMult * normalTpf)) {
-            fixedTpf = normalTpf;
-        } else {
-            normalTpf = ((normalTpf * (i - 1)) + tpf) / i;
-        }
-        return fixedTpf;
     }
 
     @Override

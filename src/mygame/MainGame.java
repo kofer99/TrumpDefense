@@ -344,4 +344,23 @@ sound = new Sound(assetManager);
     public void SkipWave() {
         spawner.newWave();
     }
+
+    // Wie viel mal länger ein Tick maximal dauern darf
+    float normalTpf = -1;
+    static float maxTimeMult = 3;
+    public float GetFixedTpf(float tpf) {
+        float fixedTpf = tpf;
+
+        if (normalTpf == -1) {
+            normalTpf = tpf;
+        }
+
+        if (tpf > (maxTimeMult * normalTpf)) {
+            fixedTpf = normalTpf;
+        } else {
+            normalTpf = ((normalTpf * (60 - 1)) + tpf) / 60;
+        }
+
+        return fixedTpf;
+    }
 }
