@@ -12,10 +12,10 @@ public class WaveSpawner {
     public boolean Enabled;
 
     int immigrantsPerWave = 5;
-    int immigrantsSpawned;
+    ArrayList<Integer> immigrantsSpawned;
     float frequency = 0.6f;
     ArrayList immigrants = new ArrayList();
-    float timeLeft = frequency;
+    ArrayList<Float> timeLeft;
     float normalTpf = -1;
     MainGame main;
 
@@ -28,25 +28,40 @@ public class WaveSpawner {
         if (!Enabled)
             return;
 
-        if(immigrantsSpawned > immigrantsPerWave) {
-            if (!immigrants.isEmpty())
-                return;
+        for (int i = 0; i < immigrantsSpawned.size(); i++) {
+            int immigrantNumber = immigrantsSpawned.get(i);
+            if (immigrantNumber >= immigrantsPerWave) {
+                if (!immigrants.isEmpty())
+                    continue;
 
-            newWave();
-        }
+                newWave();
+            }
 
-        timeLeft -= getFixedTpf(tpf);
-        if (timeLeft <= 0) {
-            timeLeft = frequency;
-            immigrantsSpawned++;
-            immigrants.add(new IllegalImmigrant(this));
+            float cooldown = timeLeft.get(i);
+            cooldown -= getFixedTpf(tpf);
+            if (cooldown <= 0) {
+                cooldown = frequency;
+                immigrantsSpawned.set(i, ++immigrantNumber);
+                immigrants.add(new IllegalImmigrant(this));
+            }
+            timeLeft.set(i, cooldown);
         }
     }
 
-    void newWave() {
+    public void newWave() {
         Wave++;
         main.NeueWelle(Wave);
-        immigrantsSpawned = 0;
+
+        // Die aktuelle Welle ist noch nicht zuende
+        if (!immigrants.isEmpty()) {
+            immigrantsSpawned.add(0);
+            timeLeft.add(frequency);
+        } else {
+            immigrantsSpawned = new ArrayList<Integer>();
+            immigrantsSpawned.add(0);
+            timeLeft = new ArrayList<Float>();
+            timeLeft.add(frequency);
+        }
     }
 
     public void setEnabled(boolean enab) {
