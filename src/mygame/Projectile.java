@@ -27,7 +27,7 @@ class Projectile extends AbstractControl {
     public Projectile(IllegalImmigrant target, Tower tower, int type) {
         this.type = type;
         this.target = target;
-        geom = GeometryCreator.instance.createProjectile(tower.getPosition(), type, target.getPosition());
+        geom = MainGame.instance.GeometryCreator.createProjectile(tower.getPosition(), type, target.getPosition());
         geom.addControl(this);
         MainGame.instance.attachToRootNode(geom);
         this.tower = tower;
@@ -49,7 +49,7 @@ class Projectile extends AbstractControl {
                 if (geom2 != null)
                     geom2.removeFromParent();
 
-                geom2 = GeometryCreator.instance.createRainbowLaser(spatial.getLocalTranslation(), target.getPosition());
+                geom2 = MainGame.instance.GeometryCreator.createRainbowLaser(spatial.getLocalTranslation(), target.getPosition());
                 MainGame.instance.attachToRootNode(geom2);
 
                 hit(tpf);

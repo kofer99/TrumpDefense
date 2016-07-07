@@ -57,7 +57,7 @@ class Tower extends AbstractControl {
     }
 
     public void init(Vector3f position) {
-        geom = GeometryCreator.instance.createTowerGeom(type);
+        geom = MainGame.instance.GeometryCreator.createTowerGeom(type);
         geom.setLocalTranslation(position);
         MainGame.instance.attachToRootNode(geom);
         s = MainGame.instance.getSpawner();
@@ -66,7 +66,7 @@ class Tower extends AbstractControl {
 
     // Für die Vorschau bevor der Turm platziert wird
     public Geometry createGeometry() {
-        return GeometryCreator.instance.createBox(Vector3f.ZERO);
+        return MainGame.instance.GeometryCreator.createBox(Vector3f.ZERO);
     }
 
     @Override

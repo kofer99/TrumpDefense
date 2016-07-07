@@ -53,11 +53,10 @@ public class MainGame extends AbstractAppState {
     private Node cubes;
     public static MainGame instance;
     public DataControl DataControl;
+    public GeometryCreator GeometryCreator;
     private Geometry backgroundGeom;
     private Quad fsq;
     private Image mapImage;
-    private int sphere_nr = 0;
-    private float speedFactor_Ball = 30f;
     private TdMap map;
     private boolean showCursor = false;
     private Geometry cursor;
@@ -66,13 +65,11 @@ public class MainGame extends AbstractAppState {
     HUD hud;
     private DirectionalLight dl;
     private DirectionalLight dl2;
-    private GeometryCreator geometryCreator;
     private InputManager inputManager;
     private FlyByCamera flyCam;
     private Camera cam;
     private AudioRenderer audioRenderer;
     private ViewPort guiViewPort;
-    private Main main;
     public int money = 500;
 
     @Override
@@ -86,7 +83,6 @@ public class MainGame extends AbstractAppState {
         this.cam = cam = this.app.getCamera();
         this.audioRenderer = this.app.getAudioRenderer();
         this.guiViewPort = this.app.getGuiViewPort();
-        main = Main.instance;
         instance = this;
         mapImage = assetManager.loadTexture("Textures/map1fields.png").getImage();
         map = new TdMap(mapImage, 15, 10);
@@ -129,7 +125,7 @@ public class MainGame extends AbstractAppState {
         helper.SelectGegner();
 
         spawner = new WaveSpawner(this);
-        geometryCreator = new GeometryCreator();
+        GeometryCreator = new GeometryCreator();
         setEnabled(true);
         // TODO: initialize your AppState, e.g. attach spatials to rootNode
         // this is called on the OpenGL thread after the AppState has been attached

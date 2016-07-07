@@ -41,7 +41,7 @@ public class IllegalImmigrant extends AbstractControl {
         ratioxr = bgObject.getWidth() / m.getWidth();
         ratioyr = bgObject.getHeight() / m.getHeight();
         Vector3f spawn = new Vector3f(-(bgObject.getWidth() / 2) + xn[0] * ratioxr, -(bgObject.getHeight() / 2) + yn[0] * ratioyr, 0.0f);
-        geom = GeometryCreator.instance.createSphere(spawn);
+        geom = MainGame.instance.GeometryCreator.createSphere(spawn);
         MainGame.instance.attachToRootNode(geom);
         geom.addControl(this);
         this.w = w;

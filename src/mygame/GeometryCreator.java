@@ -18,14 +18,12 @@ import com.jme3.util.BufferUtils;
  * @author Amir
  */
 public class GeometryCreator {
-    public static GeometryCreator instance;
     public AssetManager assetManager;
 
     public GeometryCreator() {
-        instance = this;
         assetManager = MainGame.instance.getAssetManager();
     }
-    
+
     public Spatial createTowerGeom(int type) {
         Spatial geom;
         switch (type) {
@@ -45,7 +43,7 @@ public class GeometryCreator {
         }
         return geom;
     }
-    
+
     public Geometry createSmallBox(Vector3f as) {
         Box b = new Box(0.01f, 0.01f, 0.01f);
 
