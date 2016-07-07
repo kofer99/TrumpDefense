@@ -23,6 +23,7 @@ class Projectile extends AbstractControl {
     private int type = -1;
     private Tower tower;
     private Spatial geom2;
+    private int damage;
 
     public Projectile(IllegalImmigrant target, Tower tower, int type) {
         this.type = type;
@@ -31,6 +32,7 @@ class Projectile extends AbstractControl {
         geom.addControl(this);
         MainGame.instance.attachToRootNode(geom);
         this.tower = tower;
+        damage = tower.Damage;
     }
 
     @Override
@@ -64,12 +66,13 @@ class Projectile extends AbstractControl {
     }
 
     public void hit(float fixedTpf) {
+        float damageModifier = MainGame.instance.Upgrades.DamageModifier;
         switch (type) {
             case TYPE_LASER:
-                target.hit(this, 100f * fixedTpf);
+                target.hit(this, (float)damage * fixedTpf * damageModifier);
                 break;
             default:
-                target.hit(this, 50f);
+                target.hit(this, (float)damage * damageModifier);
                 break;
         }
     }

@@ -54,6 +54,7 @@ public class MainGame extends AbstractAppState {
     public static MainGame instance;
     public DataControl DataControl;
     public GeometryCreator GeometryCreator;
+    public UpgradeManager Upgrades;
     private Geometry backgroundGeom;
     private Quad fsq;
     private Image mapImage;
@@ -127,8 +128,8 @@ public class MainGame extends AbstractAppState {
         spawner = new WaveSpawner(this);
         GeometryCreator = new GeometryCreator();
         setEnabled(true);
-        // TODO: initialize your AppState, e.g. attach spatials to rootNode
-        // this is called on the OpenGL thread after the AppState has been attached
+
+        Upgrades = new UpgradeManager(this);
     }
 
     @Override
@@ -328,13 +329,34 @@ public class MainGame extends AbstractAppState {
     public void GameOver(){
         setEnabled(false);
         hud.GameOver();
-        System.out.println("hi");
     }
 
     public void ImmigrantKilled(IllegalImmigrant immigrant) {
         spawner.remove(immigrant);
         money += 50;
         hud.setMoney(money);
+    }
+
+    public void AktiviereUpgrade(int upgrade) {
+        int price = 0;
+        switch (upgrade) {
+            case UpgradeManager.TYPE_CAP:
+                price = 400;
+                break;
+            case UpgradeManager.TYPE_TOUPE:
+                price = 500;
+                break;
+            case UpgradeManager.TYPE_FLAG:
+                price = 350;
+                break;
+        }
+
+        if (money < price)
+            return;
+
+        money -= price;
+        hud.setMoney(money);
+        Upgrades.Aktiviere(upgrade);
     }
 
     // Wie viel mal länger ein Tick maximal dauern darf

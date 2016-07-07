@@ -32,8 +32,7 @@ class Tower extends AbstractControl {
     private float maxAngle = 0.05f;
     private Projectile p;
     public String Beschreibung;
-    private int damage;
-    public boolean enabled = true;
+    public int Damage;
 
     public Tower(int type) {
         this.type = type;
@@ -44,7 +43,7 @@ class Tower extends AbstractControl {
             Beschreibung = res.getString(2);
             range = (float) res.getInt(3);
             cooldown = res.getInt(4);
-            damage = res.getInt(5);
+            Damage = res.getInt(5);
             res.close();
         } catch (Throwable e) {
             System.out.println(" . . . exception thrown:");
@@ -71,32 +70,33 @@ class Tower extends AbstractControl {
 
     @Override
     protected void controlUpdate(float tpf) {
-        if(MainGame.instance.isEnabled()){
+        if (!MainGame.instance.isEnabled())
+            return;
+
         float fixedTpf = MainGame.instance.GetFixedTpf(tpf);
         cooldownTimeLeft -= fixedTpf * 1000;
-        if(updateTarget() == false) return;
-        
+        if(!updateTarget())
+            return;
+
         switch (type) {
-                    case TYPE_UNICORN:
-                        rotate(fixedTpf);
-                        float a = (float) (getTargetAngle());
-                        if (Math.abs(a) < maxAngle && p == null) {
-                            shoot();
-                        }
-                        break;
-                    default:
-                        if (cooldownTimeLeft <= 0) {
-                            shoot();
-                        }
-                        break;
-        } }
+            case TYPE_UNICORN:
+                rotate(fixedTpf);
+                float a = (float) (getTargetAngle());
+                if (Math.abs(a) < maxAngle && p == null)
+                    shoot();
+                break;
+            default:
+                if (cooldownTimeLeft <= 0)
+                    shoot();
+                break;
+        }
     }
-    
+
     private void shoot() {
         p = new Projectile(target, this, projectileType);
-        cooldownTimeLeft = cooldown;
+        cooldownTimeLeft = cooldown * MainGame.instance.Upgrades.SpeedModifier;
     }
-    
+
     private boolean updateTarget() {
         if (target == null) {
             target = getNearestImmigrant();
@@ -108,10 +108,7 @@ class Tower extends AbstractControl {
         }
 
         // Immernoch kein target gefunden, tue nichts
-        if (target == null) {
-            return false;
-        }
-        return true;
+        return target != null;
     }
 
     @Override
@@ -143,8 +140,8 @@ class Tower extends AbstractControl {
     }
 
     public boolean IsInRange(IllegalImmigrant targeted, boolean ignoreTargeted) {
-
-        return getPosition().distance(targeted.getPosition()) < range || range == -1;
+        float modifiedRange = range * MainGame.instance.Upgrades.RangeModifier;
+        return range == -1 || getPosition().distance(targeted.getPosition()) < modifiedRange;
     }
 
     public Vector3f getPosition() {

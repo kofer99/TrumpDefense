@@ -97,9 +97,24 @@ public class HUD extends AbstractAppState implements ScreenController {
     }
 
     public void selectUpgrade(String type) {
-        // 0 == cap
-        // 1 == toupe
-        // 2 == flag
+        int upgrade = -1;
+
+        switch (Integer.parseInt(type)) {
+            case 0:
+                upgrade = UpgradeManager.TYPE_CAP;
+                break;
+            case 1:
+                upgrade = UpgradeManager.TYPE_TOUPE;
+                break;
+            case 2:
+                upgrade = UpgradeManager.TYPE_FLAG;
+                break;
+        }
+
+        if (upgrade == -1)
+            throw new IllegalArgumentException("Failed to parse given upgradetype in selectUpgrade.");
+
+        main.AktiviereUpgrade(upgrade);
     }
 
     public void openMenu() {
