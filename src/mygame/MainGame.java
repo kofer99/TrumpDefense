@@ -337,7 +337,11 @@ sound = new Sound(assetManager);
         Health--;
     }
 
-    void NeueWelle(int welle) {
+    public void NeueWelle(int welle) {
         hud.setzeWelle(welle);
+    }
+
+    public void SkipWave() {
+        spawner.newWave();
     }
 }

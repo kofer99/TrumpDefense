@@ -90,7 +90,7 @@ public class HUD extends AbstractAppState implements ScreenController {
     }
 
     public void nextWave() {
-        
+        main.SkipWave();
     }
 
     public void openSkilltree() {
