@@ -36,7 +36,7 @@ import com.jme3.texture.Texture;
 
 /**
  *
- * @author Daniel
+ * @author Daniel, Lukas
  */
 public class MainGame extends AbstractAppState {
     private SimpleApplication app;
@@ -136,8 +136,7 @@ sound = new Sound(assetManager);
         helper.SelectTuerme();
         helper.SelectGegner();
 
-
-spawner = new WaveSpawner(2000);
+        spawner = new WaveSpawner(this);
         geometryCreator = new GeometryCreator();
         setEnabled(true);
         // TODO: initialize your AppState, e.g. attach spatials to rootNode
@@ -341,6 +340,8 @@ spawner = new WaveSpawner(2000);
     }
 
     void reduceHealth(int i) {
-     Health--;
+        Health--;
     }
+
+    void NeueWelle(int welle) { }
 }

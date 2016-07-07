@@ -4,37 +4,56 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Amir
+ * @author Amir, Lukas
  */
 
-// TODO: Add better spawning mechanics
 public class WaveSpawner {
-    private int wave;
-    private int immigrantsLeft = 25;
-    private float frequency = 0.6f;
-    private ArrayList immigrants = new ArrayList();
-    private float timeLeft = frequency;
-    private float normalTpf = -1;
-    private boolean enabled=true;
+    public int Wave;
+    public boolean Enabled;
 
-    public WaveSpawner(int immigrants) {
-        immigrantsLeft = immigrants;
-        
+    int immigrantsPerWave = 5;
+    int immigrantsSpawned;
+    float frequency = 0.6f;
+    ArrayList immigrants = new ArrayList();
+    float timeLeft = frequency;
+    float normalTpf = -1;
+    MainGame main;
+
+    public WaveSpawner(MainGame main) {
+        this.main = main;
+        newWave();
     }
-    
+
     public void update(float tpf) {
-        if(enabled){
-        float fixedTpf = getFixedTpf(tpf);
-        timeLeft -= fixedTpf;
-        if(timeLeft <= 0) {
+        if (!Enabled)
+            return;
+
+        if(immigrantsSpawned > immigrantsPerWave) {
+            if (!immigrants.isEmpty())
+                return;
+
+            newWave();
+        }
+
+        timeLeft -= getFixedTpf(tpf);
+        if (timeLeft <= 0) {
             timeLeft = frequency;
+            immigrantsSpawned++;
             immigrants.add(new IllegalImmigrant(this));
-        }}
+        }
     }
-    public void setEnabled(boolean enab){
-    enabled = enab;
+
+    void newWave() {
+        Wave++;
+        main.NeueWelle(Wave);
+        immigrantsSpawned = 0;
     }
-    private float getFixedTpf(float tpf) {
+
+    public void setEnabled(boolean enab) {
+        Enabled = enab;
+    }
+
+    float getFixedTpf(float tpf) {
         float fixedTpf = tpf;
         int i = 60;
 
@@ -47,17 +66,17 @@ public class WaveSpawner {
 
         if (tpf > (maxTimeMult * normalTpf)) {
             fixedTpf = normalTpf;
-        }else {
+        } else {
             normalTpf = ((normalTpf * (i - 1)) + tpf) / i;
         }
-        
+
         return fixedTpf;
     }
-    
+
     public void remove(IllegalImmigrant i) {
         immigrants.remove(i);
     }
-    
+
     public ArrayList getImmigrants() {
         return immigrants;
     }
