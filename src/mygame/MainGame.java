@@ -72,6 +72,7 @@ public class MainGame extends AbstractAppState {
     private AudioRenderer audioRenderer;
     private ViewPort guiViewPort;
     public int money = 500;
+    float unzureichendAngezeigt;
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -134,11 +135,15 @@ public class MainGame extends AbstractAppState {
 
     @Override
     public void update(float tpf) {
-        // TODO: implement behavior during runtime
-        if (showCursor) {
+        if (showCursor)
             updateCursor();
-        }
+
         spawner.update(tpf);
+        if (unzureichendAngezeigt > 0) {
+            unzureichendAngezeigt -= GetFixedTpf(tpf);
+            if (unzureichendAngezeigt <= 0)
+                hud.UnzureichendGeld(false);
+        }
     }
 
     private void towerPreview(Tower t) {
@@ -244,7 +249,7 @@ public class MainGame extends AbstractAppState {
                 flyCam.setMoveSpeed(100);
                 flyCam.setRotationSpeed(5);
             } else if (name.equals("left") && keyPressed) {
-                if (hud.CurrentTower != -1 && money >= 250) {
+                if (hud.CurrentTower != -1 && KannKaufen(250)) {
                     Vector3f position = getMousePosition();
                     if (map.towerplace(position, fsq)) {
                         preview.init(position);
@@ -338,25 +343,34 @@ public class MainGame extends AbstractAppState {
     }
 
     public void AktiviereUpgrade(int upgrade) {
-        int price = 0;
+        int preis = 0;
         switch (upgrade) {
             case UpgradeManager.TYPE_CAP:
-                price = 400;
+                preis = 400;
                 break;
             case UpgradeManager.TYPE_TOUPE:
-                price = 500;
+                preis = 500;
                 break;
             case UpgradeManager.TYPE_FLAG:
-                price = 350;
+                preis = 350;
                 break;
         }
 
-        if (money < price)
+        if (!KannKaufen(preis))
             return;
 
-        money -= price;
-        hud.setMoney(money);
         Upgrades.Aktiviere(upgrade);
+        money -= preis;
+        hud.setMoney(money);
+    }
+
+    boolean KannKaufen(int preis) {
+        if (money >= preis)
+            return true;
+
+        hud.UnzureichendGeld(true);
+        unzureichendAngezeigt = 2f;
+        return false;
     }
 
     // Wie viel mal länger ein Tick maximal dauern darf
