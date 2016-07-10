@@ -164,7 +164,9 @@ public class HUD extends AbstractAppState implements ScreenController {
     }
 
     public void openSkilltree() {
-        
+        Main.instance.isRunning = false;
+        Main.instance.triggered = true;
+        nifty.fromXml("Interface/SkillTree.xml", "SkillTree", this);
     }
 
     public void resume() {
