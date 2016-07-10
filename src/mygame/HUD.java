@@ -55,6 +55,11 @@ public class HUD extends AbstractAppState implements ScreenController {
         UnMittel = screen.getRootElement().findElementByName("layer")
                 .findElementByName("UnMittel");
         UnMittel.setVisible(false);
+
+        // HACK: Überschreibe die hacky default value
+        // Haben wir gebraucht, dass der background groß genug ist
+        Welle.getRenderer(TextRenderer.class).setText("Welle: 0");
+        Money.getRenderer(TextRenderer.class).setText("Geld: 0");
     }
 
     public void onStartScreen() { }
