@@ -8,8 +8,6 @@ import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioRenderer;
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
-import com.jme3.font.BitmapFont;
-import com.jme3.font.BitmapText;
 import com.jme3.input.FlyByCamera;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
@@ -118,6 +116,7 @@ public class MainGame extends AbstractAppState {
         rootNode.addLight(al);
         hud = new HUD(this, assetManager, inputManager, audioRenderer, guiViewPort);
         hud.setMoney(money);
+        hud.StartText();
 
         DataControl = new DataControl();
 

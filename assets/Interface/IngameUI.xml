@@ -7,6 +7,7 @@
         <layer id="layer" childLayout="center">
             <text id="GameOver" font="Interface/Fonts/Arial.fnt" color="#f00f" text="GAME OVER" />
             <text id="UnMittel" font="Interface/Fonts/Arial.fnt" color="#f00f" text="Unzureichende Mittel!" />
+            <text id="StartGameText" font="Interface/Fonts/Arial.fnt" color="#0f08" text="Drücke Start!" />
             <panel id="ingameStats" width="20%" height="100%" backgroundColor="#44ff" align="right" childLayout="absolute">
                 <image width="100%" height="100%" x="0px" y="0px" filename="Interface/muricaflag.png"></image>
                 <text id="Welle" font="Interface/Fonts/Arial.fnt" color="#fa0f" backgroundColor="#44ff" text="Welle: 0000000" x="10%" y="2%" />

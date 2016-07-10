@@ -24,6 +24,7 @@ public class HUD extends AbstractAppState implements ScreenController {
     Element GameOver;
     Element Leben;
     Element UnMittel;
+    Element PressStart;
     Nifty nifty;
     NiftyJmeDisplay niftyDisplay;
     MainGame main;
@@ -55,6 +56,9 @@ public class HUD extends AbstractAppState implements ScreenController {
         UnMittel = screen.getRootElement().findElementByName("layer")
                 .findElementByName("UnMittel");
         UnMittel.setVisible(false);
+        PressStart = screen.getRootElement().findElementByName("layer")
+                .findElementByName("StartGameText");
+        PressStart.setVisible(false);
 
         // HACK: Überschreibe die hacky default value
         // Haben wir gebraucht, dass der background groß genug ist
@@ -79,6 +83,10 @@ public class HUD extends AbstractAppState implements ScreenController {
 
     public void GameOver() {
         GameOver.setVisible(true);
+    }
+
+    public void StartText() {
+        PressStart.setVisible(true);
     }
 
     public void UnzureichendGeld(boolean sichtbar) {
@@ -141,6 +149,8 @@ public class HUD extends AbstractAppState implements ScreenController {
     }
 
     public void nextWave() {
+        // Setze es unsichtbar beim ersten Starten
+        PressStart.setVisible(false);
         main.SkipWave();
     }
 
