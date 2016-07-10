@@ -11,12 +11,13 @@ public class WaveSpawner {
     public int Wave;
     public boolean Enabled;
 
-    int immigrantsPerWave = 5;
+    int immigrantsPerWave = 4;
     ArrayList<Integer> immigrantsSpawned;
     float frequency = 0.6f;
     ArrayList immigrants = new ArrayList();
     ArrayList<Float> timeLeft;
     MainGame main;
+    boolean shouldReset = true;
 
     public WaveSpawner(MainGame main) {
         this.main = main;
@@ -41,6 +42,7 @@ public class WaveSpawner {
                 cooldown = frequency;
                 immigrantsSpawned.set(i, ++immigrantNumber);
                 immigrants.add(new IllegalImmigrant(this));
+                shouldReset = true;
             }
             timeLeft.set(i, cooldown);
         }
@@ -49,12 +51,14 @@ public class WaveSpawner {
     public void newWave() {
         Wave++;
         main.NeueWelle(Wave);
+        immigrantsPerWave++;
 
         // Die aktuelle Welle ist noch nicht zuende
         if (!immigrants.isEmpty()) {
             immigrantsSpawned.add(0);
             timeLeft.add(frequency);
-        } else {
+        } else if(shouldReset) {
+            shouldReset = false;
             immigrantsSpawned = new ArrayList<Integer>();
             immigrantsSpawned.add(0);
             timeLeft = new ArrayList<Float>();
