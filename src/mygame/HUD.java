@@ -26,7 +26,6 @@ public class HUD extends AbstractAppState implements ScreenController {
     Element Leben;
     Element UnMittel;
     Element PressStart;
-    Element MenuDeaktiviert;
     Nifty nifty;
     NiftyJmeDisplay niftyDisplay;
     MainGame main;
@@ -59,9 +58,6 @@ public class HUD extends AbstractAppState implements ScreenController {
         PressStart = screen.getRootElement().findElementByName("layer")
                 .findElementByName("StartGameText");
         PressStart.setVisible(false);
-        MenuDeaktiviert = screen.getRootElement().findElementByName("layer")
-                .findElementByName("MenuDeaktiviert");
-        MenuDeaktiviert.setVisible(false);
 
         // HACK: Überschreibe die hacky default value
         // Haben wir gebraucht, dass der background groß genug ist
@@ -106,10 +102,6 @@ public class HUD extends AbstractAppState implements ScreenController {
 
     public void UnzureichendGeld(boolean sichtbar) {
         UnMittel.setVisible(sichtbar);
-    }
-
-    public void MenuDeaktiviert(boolean sichtbar) {
-        MenuDeaktiviert.setVisible(sichtbar);
     }
 
     public void startGame() {
@@ -159,11 +151,6 @@ public class HUD extends AbstractAppState implements ScreenController {
             throw new IllegalArgumentException("Failed to parse given upgradetype in selectUpgrade.");
 
         main.AktiviereUpgrade(upgrade);
-    }
-
-    public void openMenu() {
-        MenuDeaktiviert(true);
-        main.menuAngezeigt = 2f;
     }
 
     public void pause() {

@@ -66,7 +66,6 @@ public class MainGame extends AbstractAppState {
     private Camera cam;
     public int money = 500;
     float unzureichendAngezeigt;
-    float menuAngezeigt;
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -147,12 +146,6 @@ public class MainGame extends AbstractAppState {
             unzureichendAngezeigt -= GetFixedTpf(tpf);
             if (unzureichendAngezeigt <= 0)
                 hud.UnzureichendGeld(false);
-        }
-
-        if (menuAngezeigt > 0) {
-            menuAngezeigt -= GetFixedTpf(tpf);
-            if (menuAngezeigt <= 0)
-                hud.MenuDeaktiviert(false);
         }
     }
 
