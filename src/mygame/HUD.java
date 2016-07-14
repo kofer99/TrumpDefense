@@ -165,6 +165,12 @@ public class HUD extends AbstractAppState implements ScreenController {
         main.SkipWave();
     }
 
+    public void openMenu() {
+        Main.instance.isRunning = false;
+        Main.instance.triggered = true;
+        nifty.fromXml("Interface/IngameUI.xml", "menu", this);
+    }
+
     public void openSkilltree() {
         Main.instance.isRunning = false;
         Main.instance.triggered = true;

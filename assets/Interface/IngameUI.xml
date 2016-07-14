@@ -66,7 +66,7 @@
                     <panel width="25%" height="20%" x="1%" y="0px" backgroundColor="#0000" childLayout="absolute">
                         <image filename="Interface/menu.png" width="100%" height="100%" x="0px" y="0px"></image>
                         <control width="100%" height="100%" x="0px" y="0px" name="button" label="Open menu" id="menu" visibleToMouse="true" childLayout="center">
-                            <interact onClick="LoadMainMenu()"/>
+                            <interact onClick="openMenu()"/>
                         </control>
                     </panel>
                     <panel width="25%" height="20%" x="25%" y="0px" backgroundColor="#0000" childLayout="absolute">
@@ -92,13 +92,34 @@
         </layer>
     </screen>
 
-    <screen id="pause"controller="mygame.HUD">
+    <screen id="pause" controller="mygame.HUD">
         <layer childLayout="center">
             <panel width="25%" height="20%" x="25%" y="0px" backgroundColor="#0000" childLayout="absolute">
                 <image filename="Interface/pause.png" width="100%" height="100%" x="0px" y="0px"></image>
                 <control width="100%" height="100%" x="0px" y="0px" name="button" label="Pause game" id="pause" visibleToMouse="true" childLayout="center">
                     <interact onClick="resume()"/>
                 </control>
+            </panel>
+        </layer>
+    </screen>
+
+    <screen id="menu" controller="mygame.HUD" >
+        <layer childLayout="center">
+            <panel width="50%" height="50%" backgroundColor="#0000" childLayout="absolute">
+                <image filename="Interface/mainmenu.png" width="100%" height="100%" x="0px" y="0px"></image>
+                <image filename="Interface/Title.png" width="80%" height="25%" x="10%" y="5%"></image>
+                <panel width="25%" height="20%" x="20%" y="40%" backgroundColor="#0000" childLayout="absolute">
+                    <image filename="Interface/Play.png" width="100%" height="100%" x="0px" y="0px"></image>
+                    <control width="100%" height="100%" x="0px" y="0px" name="resume from menu button" label="Resume the game" visibleToMouse="true" childLayout="center">
+                        <interact onClick="resume()"/>
+                    </control>
+                </panel>
+                <panel width="25%" height="20%" x="55%" y="40%" backgroundColor="#0000" childLayout="absolute">
+                    <image filename="Interface/Quit.png" width="100%" height="100%" x="0px" y="0px"></image>
+                    <control width="100%" height="100%" x="0px" y="0px" name="quit button" label="Quit to main menu" visibleToMouse="true" childLayout="center">
+                        <interact onClick="LoadMainMenu()"/>
+                    </control>
+                </panel>
             </panel>
         </layer>
     </screen>
