@@ -55,12 +55,13 @@ class Tower extends AbstractControl {
             projectileType = Projectile.TYPE_TASER;
     }
 
-    public void init(Vector3f position) {
+    public Spatial init(Vector3f position) {
         geom = MainGame.instance.GeometryCreator.createTowerGeom(type);
         geom.setLocalTranslation(position);
         MainGame.instance.attachToRootNode(geom);
         s = MainGame.instance.getSpawner();
         geom.addControl(this);
+        return geom;
     }
 
     // Für die Vorschau bevor der Turm platziert wird
@@ -211,5 +212,12 @@ class Tower extends AbstractControl {
                 throw new IllegalArgumentException("Invalid type for tower name " + type);
         }
         return name;
+    }
+
+    public void remove() {
+        if (geom != null)
+            geom.removeFromParent();
+
+        spatial.removeFromParent();
     }
 }

@@ -29,6 +29,7 @@ import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Quad;
 import com.jme3.texture.Image;
 import com.jme3.texture.Texture;
+import java.util.ArrayList;
 
 /**
  *
@@ -66,6 +67,7 @@ public class MainGame extends AbstractAppState {
     private Camera cam;
     public int money = 500;
     float unzureichendAngezeigt;
+    ArrayList<Tower> allTowers = new ArrayList<Tower>();
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -245,6 +247,7 @@ public class MainGame extends AbstractAppState {
         backgroundGeom.setLocalTranslation(-(width / 2), -(camZ / 2), 0);
         return backgroundGeom;
     }
+
     private ActionListener actionListener = new ActionListener() {
         public void onAction(String name, boolean keyPressed, float tpf) {
             if (name.equals("move")) {
