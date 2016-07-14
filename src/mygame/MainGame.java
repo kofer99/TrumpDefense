@@ -5,7 +5,6 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
-import com.jme3.audio.AudioRenderer;
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
 import com.jme3.input.FlyByCamera;
@@ -23,7 +22,6 @@ import com.jme3.math.Ray;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
-import com.jme3.renderer.ViewPort;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
@@ -46,7 +44,6 @@ public class MainGame extends AbstractAppState {
     protected Geometry player;
     protected Geometry blas;
     private Node spheres;
-    Boolean isRunning = true;
     protected Node shootables;
     private Node cubes;
     public static MainGame instance;
@@ -67,8 +64,6 @@ public class MainGame extends AbstractAppState {
     private InputManager inputManager;
     private FlyByCamera flyCam;
     private Camera cam;
-    private AudioRenderer audioRenderer;
-    private ViewPort guiViewPort;
     public int money = 500;
     float unzureichendAngezeigt;
     float menuAngezeigt;
@@ -77,19 +72,35 @@ public class MainGame extends AbstractAppState {
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
         this.app = (SimpleApplication) app;
-        this.rootNode = this.app.getRootNode();
-        this.assetManager = this.app.getAssetManager();
-        this.inputManager = this.app.getInputManager();
-        this.flyCam = this.app.getFlyByCamera();
-        this.cam = cam = this.app.getCamera();
-        this.audioRenderer = this.app.getAudioRenderer();
-        this.guiViewPort = this.app.getGuiViewPort();
+        rootNode = this.app.getRootNode();
+        assetManager = this.app.getAssetManager();
+        inputManager = this.app.getInputManager();
+        flyCam = this.app.getFlyByCamera();
+        cam = this.app.getCamera();
         instance = this;
-        mapImage = assetManager.loadTexture("Textures/map1fields.png").getImage();
-        map = new TdMap(mapImage, 15, 10);
-        sound = new Sound(assetManager);
+
         flyCam.setEnabled(false);
         inputManager.setCursorVisible(true);
+        sound = new Sound(assetManager);
+
+        hud = new HUD(this, assetManager, inputManager, this.app.getAudioRenderer(), this.app.getGuiViewPort());
+        hud.LoadMainMenu();
+
+        DataControl = new DataControl();
+
+        // Only for debugging, can be removed later
+        DataHelper helper = new DataHelper(DataControl);
+        helper.SelectTuerme();
+        helper.SelectGegner();
+    }
+
+    public void StartNewGame() {
+
+        // Cleanup of old maps
+        rootNode.detachAllChildren();
+
+        mapImage = assetManager.loadTexture("Textures/map1fields.png").getImage();
+        map = new TdMap(mapImage, 15, 10);
 
         cam.setLocation(new Vector3f(0, 0, 1f));
         initKeys();
@@ -101,6 +112,7 @@ public class MainGame extends AbstractAppState {
         shootables.attachChild(cubes);
         rootNode.attachChild(shootables);
 
+        money = 500;
         Health = 25;
 
         dl = new DirectionalLight();
@@ -113,24 +125,14 @@ public class MainGame extends AbstractAppState {
         rootNode.addLight(dl2);
         AmbientLight al = new AmbientLight();
         al.setColor(ColorRGBA.White);
-
         rootNode.addLight(al);
-        hud = new HUD(this, assetManager, inputManager, audioRenderer, guiViewPort);
-        hud.setMoney(money);
-        hud.StartText();
-
-        DataControl = new DataControl();
-
-        // Only for debugging, can be removed later
-        DataHelper helper = new DataHelper(DataControl);
-        helper.SelectTuerme();
-        helper.SelectGegner();
 
         spawner = new WaveSpawner(this);
         GeometryCreator = new GeometryCreator();
-        setEnabled(true);
-
         Upgrades = new UpgradeManager(this);
+
+        hud.FirstBind = true;
+        hud.resume();
     }
 
     @Override
@@ -138,7 +140,9 @@ public class MainGame extends AbstractAppState {
         if (showCursor)
             updateCursor();
 
-        spawner.update(tpf);
+        if (spawner != null)
+            spawner.update(tpf);
+
         if (unzureichendAngezeigt > 0) {
             unzureichendAngezeigt -= GetFixedTpf(tpf);
             if (unzureichendAngezeigt <= 0)
@@ -161,11 +165,12 @@ public class MainGame extends AbstractAppState {
         super.setEnabled(enabled);
         if (enabled) {
             sound.startMusic();
-            spawner.setEnabled(true);
+            if (spawner != null)
+                spawner.setEnabled(true);
         } else {
             sound.stopMusic();
-            spawner.setEnabled(false);
-            // PauseScreen.instance.setEnabled(true);
+            if (spawner != null)
+                spawner.setEnabled(false);
         }
     }
 
@@ -222,8 +227,8 @@ public class MainGame extends AbstractAppState {
     protected Geometry makeFloor() {
         // https://hub.jmonkeyengine.org/t/how-to-set-a-background-texture/22996
         // TODO: Die map ueberlappt noch mit der UI
-        float w = this.app.getContext().getSettings().getWidth();
-        float h = this.app.getContext().getSettings().getHeight();
+        float w = app.getContext().getSettings().getWidth();
+        float h = app.getContext().getSettings().getHeight();
         float ratio = w / h;
 
         // Move the Camera back

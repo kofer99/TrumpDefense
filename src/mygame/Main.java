@@ -10,7 +10,7 @@ import com.jme3.renderer.RenderManager;
  */
 public class Main extends SimpleApplication {
 
-    public boolean isRunning = true;
+    public boolean isRunning = false;
     public boolean triggered = false;
     public static void main(String[] args) {
         Main app = new Main();

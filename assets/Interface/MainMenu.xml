@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nifty xmlns="http://nifty-gui.sourceforge.net/nifty-1.3.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://nifty-gui.sourceforge.net/nifty-1.3.xsd http://nifty-gui.sourceforge.net/nifty-1.3.xsd">
+    <!-- +++++++++++++++++++++++++++++++++++++++ -->
+    <!-- main menu screen -->
+    <!-- +++++++++++++++++++++++++++++++++++++++ -->
+    <screen id="main menu" controller="mygame.HUD">
+        <layer id="layer" backgroundColor="#003f" childLayout="center">
+            <image width="100%" height="100%" x="0px" y="0px" filename="Interface/mainmenu.png"></image>
+            <panel width="100%" height="100%" backgroundColor="#0000" childLayout="absolute">
+                <image filename="Interface/Title.png" width="80%" height="25%" x="5%" y="5%"></image>
+            </panel>
+            <panel width="100%" height="100%" backgroundColor="#0000" childLayout="absolute">
+                <image filename="Interface/Play.png" width="20%" height="15%" x="10%" y="45%"></image>
+                <control width="20%" height="15%" x="10%" y="45%" name="start game button" label="Start a new game" visibleToMouse="true" childLayout="center">
+                    <interact onClick="startGame()"/>
+                </control>
+            </panel>
+        </layer>
+    </screen>
+</nifty>

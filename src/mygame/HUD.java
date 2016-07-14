@@ -18,6 +18,7 @@ import de.lessvoid.nifty.elements.render.TextRenderer;
  */
 public class HUD extends AbstractAppState implements ScreenController {
     public int CurrentTower = -1;
+    public boolean FirstBind;
 
     Element Welle;
     Element Money;
@@ -35,8 +36,6 @@ public class HUD extends AbstractAppState implements ScreenController {
         niftyDisplay = new NiftyJmeDisplay(assetManager, inputManager, audioRenderer, guiViewPort);
         guiViewPort.addProcessor(niftyDisplay);
         nifty = niftyDisplay.getNifty();
-
-        nifty.fromXml("Interface/IngameUI.xml", "sidebar", this);
     }
 
     public void bind(Nifty nifty, Screen screen) {
@@ -68,10 +67,22 @@ public class HUD extends AbstractAppState implements ScreenController {
         // Haben wir gebraucht, dass der background groß genug ist
         Welle.getRenderer(TextRenderer.class).setText("Welle: 0");
         Money.getRenderer(TextRenderer.class).setText("Geld: 0");
+
+        // HACK HACK HACK: ugh
+        if (FirstBind) {
+            setMoney(main.money);
+            StartText();
+        }
     }
 
     public void onStartScreen() { }
     public void onEndScreen() { }
+
+    public void LoadMainMenu() {
+        Main.instance.isRunning = false;
+        Main.instance.triggered = true;
+        nifty.fromXml("Interface/MainMenu.xml", "main menu", this);
+    }
 
     public void setMoney(int money) {
         Money.getRenderer(TextRenderer.class).setText("Geld: " + money);
@@ -99,6 +110,10 @@ public class HUD extends AbstractAppState implements ScreenController {
 
     public void MenuDeaktiviert(boolean sichtbar) {
         MenuDeaktiviert.setVisible(sichtbar);
+    }
+
+    public void startGame() {
+        main.StartNewGame();
     }
 
     public void placeTower(String type) {
