@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <nifty xmlns="http://nifty-gui.sourceforge.net/nifty-1.3.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://nifty-gui.sourceforge.net/nifty-1.3.xsd http://nifty-gui.sourceforge.net/nifty-1.3.xsd">
+    <useControls filename="nifty-default-controls.xml" />
     <!-- +++++++++++++++++++++++++++++++++++++++ -->
     <!-- start screen -->
     <!-- +++++++++++++++++++++++++++++++++++++++ -->
@@ -110,13 +111,13 @@
                 <image filename="Interface/Title.png" width="80%" height="25%" x="10%" y="5%"></image>
                 <panel width="25%" height="20%" x="20%" y="40%" backgroundColor="#0000" childLayout="absolute">
                     <image filename="Interface/Play.png" width="100%" height="100%" x="0px" y="0px"></image>
-                    <control width="100%" height="100%" x="0px" y="0px" name="resume from menu button" label="Resume the game" visibleToMouse="true" childLayout="center">
+                    <control width="100%" height="100%" x="0px" y="0px" name="button" label="Resume the game" visibleToMouse="true" childLayout="center">
                         <interact onClick="resume()"/>
                     </control>
                 </panel>
                 <panel width="25%" height="20%" x="55%" y="40%" backgroundColor="#0000" childLayout="absolute">
                     <image filename="Interface/Quit.png" width="100%" height="100%" x="0px" y="0px"></image>
-                    <control width="100%" height="100%" x="0px" y="0px" name="quit button" label="Quit to main menu" visibleToMouse="true" childLayout="center">
+                    <control width="100%" height="100%" x="0px" y="0px" name="button" label="Quit to main menu" visibleToMouse="true" childLayout="center">
                         <interact onClick="LoadMainMenu()"/>
                     </control>
                 </panel>
