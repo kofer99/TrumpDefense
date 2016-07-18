@@ -124,9 +124,13 @@ public class MainGame extends AbstractAppState {
         dl2.setDirection(new Vector3f(0.0f, 0.0f, 1.0f).normalizeLocal());
         dl2.setColor(ColorRGBA.White);
         rootNode.addLight(dl2);
-        AmbientLight al = new AmbientLight();
-        al.setColor(ColorRGBA.White);
-        rootNode.addLight(al);
+
+        // HACK: Use multiple AmbientLights to make the lasers visible
+        for (int i = 0; i < 6; i++) {
+            AmbientLight al = new AmbientLight();
+            al.setColor(ColorRGBA.White);
+            rootNode.addLight(al);
+        }
 
         spawner = new WaveSpawner(this);
         GeometryCreator = new GeometryCreator();
