@@ -90,6 +90,11 @@ public class IllegalImmigrant extends AbstractControl {
     }
     
     public void hit(Projectile p, float dmg) {
+        if (!living) {
+            p.remove();
+            return;
+        }
+
         if(dmg != -1) {
             health -= dmg;
         }
@@ -119,6 +124,9 @@ public class IllegalImmigrant extends AbstractControl {
     }
 
     void killed() {
+        if (!living)
+            return;
+
         spatial.removeFromParent();
         MainGame.instance.ImmigrantKilled(this);
         living = false;
