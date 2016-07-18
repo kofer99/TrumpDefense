@@ -61,8 +61,8 @@ public class HUD extends AbstractAppState implements ScreenController {
 
         // HACK: Überschreibe die hacky default value
         // Haben wir gebraucht, dass der background groß genug ist
-        Welle.getRenderer(TextRenderer.class).setText("Welle: 0");
-        Money.getRenderer(TextRenderer.class).setText("Geld: 0");
+        setzeWelle(0);
+        setMoney(0);
 
         // HACK HACK HACK: ugh
         if (FirstBind) {
