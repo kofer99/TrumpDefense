@@ -104,7 +104,7 @@ class Tower extends AbstractControl {
         }
 
         // Versuche nicht jemanden auserhalb der Reichweite zu erwischen
-        if (target != null && (!IsInRange(target) || !target.isLiving())) {
+        if (target != null && (!target.isLiving() || !InTowerRange(target))) {
             target = getNearestImmigrant();
         }
 
@@ -117,32 +117,40 @@ class Tower extends AbstractControl {
 
     public IllegalImmigrant getNearestImmigrant() {
         IllegalImmigrant nearest = null;
+        float min = 10000;
         for (Object o : s.getImmigrants()) {
             IllegalImmigrant i = (IllegalImmigrant) o;
+            float dist = getPosition().distance(i.getPosition());
+            if (dist >= min || !IsInRange(i, dist))
+                continue;
+
             switch (type) {
                 case TYPE_MARINE:
-                    if (IsInRange(i)) {
-                        nearest = i;
-                    }
+                    nearest = i;
+                    min = dist;
                     break;
                 case TYPE_POLICE:
-                    if (IsInRange(i) && i.getTaserTicks() == 0) {
+                    if (i.getTaserTicks() == 0) {
                         nearest = i;
+                        min = dist;
                     }
                     break;
                 case TYPE_UNICORN:
-                    if (IsInRange(i)) {
-                        nearest = i;
-                    }
+                    nearest = i;
+                    min = dist;
                     break;
             }
         }
         return nearest;
     }
 
-    public boolean IsInRange(IllegalImmigrant targeted) {
+    public boolean IsInRange(IllegalImmigrant targeted, float distance) {
         float modifiedRange = range * MainGame.instance.Upgrades.RangeModifier;
-        return range == -1 || getPosition().distance(targeted.getPosition()) < modifiedRange;
+        return range == -1 || distance < modifiedRange;
+    }
+
+    public boolean InTowerRange(IllegalImmigrant targeted) {
+        return IsInRange(targeted, getPosition().distance(targeted.getPosition()));
     }
 
     public Vector3f getPosition() {
